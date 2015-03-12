@@ -3,11 +3,16 @@ define (require) ->
     
     Scene = require 'cs!game/scenes/Scene'
     HeroPlane = require 'cs!game/entities/HeroPlane'
+    Background = require 'cs!game/entities/Background'
     
     class PlayScene extends Scene
         
         # Démarrage de la scène
         handleStart: ->
+            @width = @game.canvas.width
+            @height = @game.canvas.height
+            
+            @addChild new Background @
             @addChild new HeroPlane @
         
         # Affichage de la scène
