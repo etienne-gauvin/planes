@@ -1,6 +1,7 @@
 define (require) ->
     
     Entity = require 'cs!game/entities/Entity'
+    floor = Math.floor
     
     class Plane extends Entity
         
@@ -31,6 +32,24 @@ define (require) ->
             @speedLossUphill = 600
             @speedLossDownhill = 500
             
+            # Représentation de la vitesse verticale de l'avion (read only)
+            # comprise entre -1 (min) et 1 (max)
+            @set 'vSpeedPercentage', ->
+            @get 'vSpeedPercentage', =>
+                vSpeedPercentage = - @velY / @minVSpeed if @velY < 0
+                vSpeedPercentage =   @velY / @maxVSpeed if @velY > 0
+                return vSpeedPercentage or 0
+            
+            # Retourne le numéro de frame actuel selon la vitesse verticale (read only)
+            @set 'frame', ->
+            @get 'frame', => floor(@vSpeedPercentage * 3 + 0.5)
+            
+            # Retourne l'angle actuel en degrés selon la vitesse verticale (read only)
+            @set 'angle', ->
+            @get 'angle', => @vSpeedPercentage * 12
+            
+            
+                
         
         # Mise à jour
         # @param Number dt
@@ -43,15 +62,18 @@ define (require) ->
         # @param CanvasRenderingContext2D
         handleDraw: (ctx) ->
             
-            currentFrame = 0
-            currentFrame = -Math.floor(@velY / @minVSpeed * 3) if @velY < 0
-            currentFrame = Math.floor(@velY / @maxVSpeed * 3) if @velY > 0
+            ctx.save()
+            ctx.translate(floor(@x + @width * 0.5), floor(@y + @height * 0.5))
+            ctx.rotate(@frame/3*15 * Math.PI / 180)
+            ctx.translate(floor(- @width * 0.5), floor(- @height * 0.5))
             
             ctx.drawImage(@image,
-                          0, @height * (currentFrame + 3),
+                          0, @height * (@frame + 3),
                           @width, @height,
-                          @x, @y,
+                          0, 0,
                           @width, @height)
+            
+            ctx.restore()
         
         
         # Appliquer le déplacement vertical
