@@ -12,7 +12,7 @@ define (require) ->
             @image = null
             
             # Dimensions
-            @width =  23 * 3
+            @width =  24 * 3
             @height = 16 * 3
             
             # Limites de vitesse (en pixels/s)
