@@ -19,6 +19,8 @@ define (require) ->
             
             @goUp = kb.isDown(kb.UP)
             @goDown = kb.isDown(kb.DOWN)
+            @goForward = kb.isDown(kb.RIGHT)
+            @goBackward = kb.isDown(kb.LEFT)
             
             @updateVelocity(dt)
             @updatePosition(dt)
