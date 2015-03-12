@@ -9,9 +9,9 @@ define (require) ->
             super(@scene)
             
             @image = @scene.game.assets.plane
-            @x = 10
-            @y = 10
-        
+            @x = 100
+            @y = 100
+            
         # Mise à jour
         # @param Number dt
         handleUpdate: (dt) ->
