@@ -8,3 +8,8 @@ define (require) ->
                 @::[key] = value for key, value of mixin::
             @
         
+        get: (key, f) ->
+            @__defineGetter__ key, f
+            
+        set: (key, f) ->
+            @__defineSetter__ key, f
