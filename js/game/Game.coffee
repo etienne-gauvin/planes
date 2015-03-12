@@ -21,8 +21,8 @@ define (require) ->
             
             # Scenes
             @scenes =
-                loading: new LoadingScene(this)
-                play: new PlayScene(this)
+                loading: new LoadingScene @
+                play: new PlayScene @
             
             # Scene actuelle
             @scene = @scenes.loading
