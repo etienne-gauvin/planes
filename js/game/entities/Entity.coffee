@@ -10,6 +10,9 @@ define (require) ->
             
             # Position
             @x = @y = 0
+            
+            # Dimensions
+            @width = @height = 0
         
             # Vélocité (en pixel/s)
             @velX = @velY = 0
@@ -42,4 +45,25 @@ define (require) ->
         updatePosition: (dt) ->
             @x += @velX * dt
             @y += @velY * dt
+        
+        # Garder l'avion dans les limites de l'écran
+        updateVelocityToKeepOnScreen: ->
+            # Limiter la vitesse sur les bords de l'écran
+            padding = 100
+            
+            # Limitation en haut
+            if @velY < 0 and @y < padding
+                @velY *= Math.pow((@y / padding), 0.1) or 0
+            
+            # Limitation en bas
+            if @velY > 0 and @scene.height - @y - @height < padding
+                @velY *= Math.pow(((@scene.height - @y - @height) / padding), 0.1) or 0
+                
+            # Limitation à droite
+            if @velX < 0 and @x < padding
+                @velX *= Math.pow((@x / padding), 0.1) or 0
+                
+            # Limitation à gauche
+            if @velX > 0 and @scene.width - @x - @width < padding
+                @velX *= Math.pow(((@scene.width - @x - @width) / padding), 0.1) or 0
                 

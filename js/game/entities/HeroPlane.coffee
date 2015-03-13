@@ -23,4 +23,5 @@ define (require) ->
             @goBackward = kb.isDown(kb.LEFT)
             
             @updateVelocity(dt)
+            @updateVelocityToKeepOnScreen(dt)
             @updatePosition(dt)
