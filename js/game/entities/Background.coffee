@@ -12,7 +12,7 @@ define (require) ->
             
             # Spritesheet de l'avion
             @layers = [
-                { speed: 10,  alpha: 0.7, shift: 0, image: @scene.game.assets.backgroundMountainsB },
+                { speed: 10, alpha: 0.6, shift: 0, image: @scene.game.assets.backgroundMountainsB },
                 { speed: 20, alpha: 1,   shift: 0, image: @scene.game.assets.backgroundMountainsA },
                 { speed: 40, alpha: 0.6, shift: 0, image: @scene.game.assets.backgroundClouds },
             ]
