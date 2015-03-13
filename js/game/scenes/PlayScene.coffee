@@ -4,6 +4,7 @@ define (require) ->
     Scene = require 'cs!game/scenes/Scene'
     HeroPlane = require 'cs!game/entities/HeroPlane'
     Background = require 'cs!game/entities/Background'
+    easeout = require('cs!helper').easeout
     
     class PlayScene extends Scene
         
@@ -13,7 +14,18 @@ define (require) ->
             @height = @game.canvas.height
             
             @addChild new Background @
-            @addChild new HeroPlane @
+            
+            @hero = new HeroPlane @
+            @hero.y = @game.canvas.height*.5 - @hero.height*.5
+            @addChild @hero
+        
+        # Mise à jour de la scène
+        # @param Number dt
+        handleUpdate: (dt) ->
+            super dt
+            
+            if @game.t < 1
+                @hero.x = easeout(@game.t, 1, - @hero.width, @hero.width * 2)
         
         # Affichage de la scène
         # @param CanvasRenderingContext2D
