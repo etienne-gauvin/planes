@@ -9,6 +9,7 @@ html, body {
 canvas {
     display: block;
     margin: auto;
+    background-color: #bbedf3;
 }
 footer {
     margin-top: 1em;
