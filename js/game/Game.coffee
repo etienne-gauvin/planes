@@ -13,6 +13,9 @@ define (require) ->
             @canvas = document.getElementById('canvas')
             @ctx = @canvas.getContext('2d')
             
+            # Temps écoulé depuis le démarrage du jeu
+            @t = 0
+            
             # Images, sons, etc.
             @assets = {}
             
@@ -63,6 +66,7 @@ define (require) ->
         
         # Mise à jour du jeu puis de l'affichage
         handleUpdate: (dt) ->
+            @t += dt
             @scene.handleUpdate(dt)
             @scene.handleDraw(@ctx)
         
