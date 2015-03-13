@@ -17,7 +17,7 @@ define (require) ->
         # @param Number dt
         handleUpdate: (dt) ->
             for entity in @entities
-                entity.handleUpdate(dt)
+                entity.handleUpdate(dt) if entity?
         
         # Affichage de la scène
         # @param CanvasRenderingContext2D
@@ -58,7 +58,12 @@ define (require) ->
         addChild: (entity) ->
             @entities.push entity
         
+        # Retirer une entité enfant
+        removeChild: (entity) ->
+            for e of @entities
+                delete @entities[e] if entity is @entities[e]
+        
         # Afficher les entités
         drawEntities: (ctx) ->
             for entity in @entities
-                entity.handleDraw(ctx)
+                entity.handleDraw(ctx) if entity?
