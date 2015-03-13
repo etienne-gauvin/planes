@@ -26,8 +26,8 @@ define (require) ->
             @goUp = @goDown = @goForward = @goBackward = no
             
             # Gain de vitesse lors du déplacement (en pixels/s^-1)
-            @speedGainUphill = 700
-            @speedGainDownhill = 800
+            @speedGainUphill = 900
+            @speedGainDownhill = 1000
             @speedGainForward = 500
             @speedGainBackward = 1000
             
@@ -104,23 +104,4 @@ define (require) ->
             @velY = @minVSpeed if @velY < @minVSpeed
             @velX = @maxHSpeed if @velX > @maxHSpeed
             @velX = @minHSpeed if @velX < @minHSpeed
-            
-            # Limiter la vitesse sur les bords de l'écran
-            padding = 100
-            
-            # Limitation en haut
-            if @velY < 0 and @y < padding
-                @velY *= Math.pow((@y / padding), 0.1) or 0
-            
-            # Limitation en bas
-            if @velY > 0 and @scene.height - @y - @height < padding
-                @velY *= Math.pow(((@scene.height - @y - @height) / padding), 0.1) or 0
-                
-            # Limitation à droite
-            if @velX < 0 and @x < padding
-                @velX *= Math.pow((@x / padding), 0.1) or 0
-                
-            # Limitation à gauche
-            if @velX > 0 and @scene.width - @x - @width < padding
-                @velX *= Math.pow(((@scene.width - @width) / padding), 0.1) or 0
-                
+        
