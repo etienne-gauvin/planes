@@ -38,8 +38,8 @@ define (require) ->
             loadQueue.loadManifest(@config.assetsManifest, false, @config.assetsBasePath)
 
             # A la fin du chargement, lancer le jeu
-            loadQueue.on "complete", => @scenes.loading.handleComplete()
-            loadQueue.on "progress", => @scenes.loading.handleProgress()
+            loadQueue.on "complete", (e) => @scenes.loading.handleComplete(e)
+            loadQueue.on "progress", (e) => @scenes.loading.handleProgress(e)
             loadQueue.on "fileload", (e) =>
                 @assets[e.item.id] = e.result
                 @scenes.loading.handleFileLoad(e)
