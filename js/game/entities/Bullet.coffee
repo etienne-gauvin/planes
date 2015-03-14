@@ -3,7 +3,7 @@ define (require) ->
     Entity = require 'cs!game/entities/Entity'
     floor = Math.floor
     
-    class Plane extends Entity
+    class Bullet extends Entity
         
         # Constructeur
         constructor: (@scene, @plane, @angle) ->
@@ -16,7 +16,7 @@ define (require) ->
             @speed = 800
             
             # Longueur visible
-            @length = 15
+            @length = 21
             
             # Vélocité
             @velX = Math.cos(@angle/3*15 * Math.PI/180) * @speed
@@ -37,7 +37,7 @@ define (require) ->
             ctx.translate(@x + @length*.5, @y)
             ctx.rotate(@angle/3*15 * Math.PI/180)
             ctx.translate(floor(-@length*.5), 0)
-            ctx.fillStyle = 'rgba(255, 108, 0, 0.8)'
+            ctx.fillStyle = 'rgba(255, 173, 18, 0.8)'
             ctx.fillRect(0, 0, @length, 3)
             ctx.restore()
         

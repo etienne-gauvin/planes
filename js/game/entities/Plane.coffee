@@ -58,7 +58,7 @@ define (require) ->
             @shoot = no
             
             # Cadence de tir
-            @gunShootCadency = 0.2
+            @gunShootCadency = 0.15
             @gunLastShoot = 0
             @gunPrecision = 0.5
                 
