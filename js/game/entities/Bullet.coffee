@@ -6,17 +6,17 @@ define (require) ->
     class Plane extends Entity
         
         # Constructeur
-        constructor: (@scene, @plane) ->
+        constructor: (@scene, @plane, @angle) ->
             super @scene
             
             @x = @plane.x + @plane.width + 3
             @y = @plane.y + @plane.height / 2 + (@plane.vSpeedPercentage + 0.1) *   16
             
             # Vitesse (en pixels/s)
-            @speed = 1000
+            @speed = 800
             
-            # Angle
-            @angle = @plane.angle
+            # Longueur visible
+            @length = 15
             
             # Vélocité
             @velX = Math.cos(@angle/3*15 * Math.PI/180) * @speed
@@ -34,10 +34,11 @@ define (require) ->
         handleDraw: (ctx) ->
             
             ctx.save()
-            ctx.translate(@x + 4.5, @y)
+            ctx.translate(@x + @length*.5, @y)
             ctx.rotate(@angle/3*15 * Math.PI/180)
-            ctx.translate(floor(-4.5), 0)
-            ctx.fillRect(0, 0, 9, 3)
+            ctx.translate(floor(-@length*.5), 0)
+            ctx.fillStyle = 'rgba(255, 108, 0, 0.8)'
+            ctx.fillRect(0, 0, @length, 3)
             ctx.restore()
         
         

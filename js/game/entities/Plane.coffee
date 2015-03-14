@@ -60,6 +60,7 @@ define (require) ->
             # Cadence de tir
             @gunShootCadency = 0.2
             @gunLastShoot = 0
+            @gunPrecision = 0.5
                 
         
         # Mise à jour
@@ -125,5 +126,5 @@ define (require) ->
             @gunLastShoot += dt
             if @shoot and @gunLastShoot >= @gunShootCadency
                 @gunLastShoot = 0
-                @scene.addChild(new Bullet(@scene, @))
+                @scene.addChild(new Bullet(@scene, @, @angle + (Math.random()-.5)*@gunPrecision))
                 
