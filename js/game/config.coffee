@@ -1,7 +1,9 @@
 define
     assetsBasePath: 'assets/'
     assetsManifest: [
-        { id: 'plane',          src: 'images/plane.png' },
+        { id: 'heroPlaneA',          src: 'images/heroPlaneA.png' },
+        { id: 'heroPlaneB',          src: 'images/heroPlaneB.png' },
+        { id: 'heroPlaneC',          src: 'images/heroPlaneC.png' },
         
         { id: 'backgroundMountainsA',     src: 'images/backgroundMountainsA.png' },
         { id: 'backgroundMountainsB',     src: 'images/backgroundMountainsB.png' },

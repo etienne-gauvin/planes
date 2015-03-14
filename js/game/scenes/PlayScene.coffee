@@ -1,10 +1,14 @@
 # Classe abstraite représentant une scène
 define (require) ->
     
-    Scene = require 'cs!game/scenes/Scene'
-    HeroPlane = require 'cs!game/entities/HeroPlane'
-    Background = require 'cs!game/entities/Background'
     easeout = require('cs!helper').easeout
+    
+    Scene = require 'cs!game/scenes/Scene'
+    Background = require 'cs!game/entities/Background'
+    
+    HeroPlaneA = require 'cs!game/entities/HeroPlaneA'
+    HeroPlaneB = require 'cs!game/entities/HeroPlaneB'
+    HeroPlaneC = require 'cs!game/entities/HeroPlaneC'
     
     class PlayScene extends Scene
         
@@ -15,7 +19,7 @@ define (require) ->
             
             @addChild new Background @
             
-            @hero = new HeroPlane @
+            @hero = new HeroPlaneA @
             @hero.y = @game.canvas.height*.5 - @hero.height*.5
             @addChild @hero
         
@@ -37,3 +41,21 @@ define (require) ->
             
             @drawEntities(ctx)
         
+        # Lors de l'appui sur une touche
+        handleKeyDown: (event) ->
+            if event.keyCode is @game.keyboard.SPACE
+                @removeChild @hero
+                x = @hero.x
+                y = @hero.y
+                
+                if @hero instanceof HeroPlaneA
+                    @hero = new HeroPlaneB @
+                else if @hero instanceof HeroPlaneB
+                    @hero = new HeroPlaneC @
+                else
+                    @hero = new HeroPlaneA @
+                
+                @hero.x = x
+                @hero.y = y
+                
+                @addChild @hero

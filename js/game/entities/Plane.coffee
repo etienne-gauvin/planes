@@ -7,7 +7,7 @@ define (require) ->
         
         # Constructeur
         constructor: (@scene) ->
-            super(@scene)
+            super @scene
             
             # Spritesheet de l'avion
             @image = null

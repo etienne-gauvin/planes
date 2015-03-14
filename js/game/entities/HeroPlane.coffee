@@ -5,13 +5,16 @@ define (require) ->
     class HeroPlane extends Plane
         
         # Constructeur
+        # @param Scene @scene
+        # @param String @version a|b|c
         constructor: (@scene) ->
-            super(@scene)
+            super @scene
             
-            @image = @scene.game.assets.plane
-            @x = 0
-            @y = 0
+            @x = @y = 0
             
+            @image = @scene.game.assets.heroPlaneA
+            
+        
         # Mise à jour
         # @param Number dt
         handleUpdate: (dt) ->
