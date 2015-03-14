@@ -8,6 +8,7 @@ define ->
             @RIGHT  = 39
             @LEFT   = 37
             @SPACE  = 32
+            @C      = 67
             
             # Témoins de pression
             @keys = []

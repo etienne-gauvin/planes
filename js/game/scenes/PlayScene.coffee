@@ -43,7 +43,7 @@ define (require) ->
         
         # Lors de l'appui sur une touche
         handleKeyDown: (event) ->
-            if event.keyCode is @game.keyboard.SPACE
+            if event.keyCode is @game.keyboard.C
                 @removeChild @hero
                 x = @hero.x
                 y = @hero.y
