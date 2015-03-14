@@ -4,6 +4,8 @@ define (require) ->
     PlayScene = require 'cs!game/scenes/PlayScene'
     Keyboard = require 'cs!game/Keyboard'
     
+    window.log = (params...) -> console.log params...
+
     class Game
         # Constructeur
         constructor: (config) ->
