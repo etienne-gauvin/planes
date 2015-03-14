@@ -10,6 +10,7 @@ canvas {
     display: block;
     margin: auto;
     background-color: #bbedf3;
+    border-radius: 4px;
 }
 footer {
     margin-top: 1em;
