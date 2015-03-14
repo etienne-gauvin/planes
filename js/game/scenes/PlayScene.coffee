@@ -47,6 +47,8 @@ define (require) ->
                 @removeChild @hero
                 x = @hero.x
                 y = @hero.y
+                velX = @hero.velX
+                velY = @hero.velY
                 
                 if @hero instanceof HeroPlaneA
                     @hero = new HeroPlaneB @
@@ -57,5 +59,7 @@ define (require) ->
                 
                 @hero.x = x
                 @hero.y = y
+                @hero.velX = velX
+                @hero.velY = velY
                 
                 @addChild @hero
