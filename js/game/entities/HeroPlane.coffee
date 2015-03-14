@@ -25,6 +25,9 @@ define (require) ->
             @goForward = kb.isDown(kb.RIGHT)
             @goBackward = kb.isDown(kb.LEFT)
             
+            @shoot = kb.isDown(kb.SPACE)
+            
             @updateVelocity(dt)
             @updateVelocityToKeepOnScreen(dt)
             @updatePosition(dt)
+            @updateGun(dt)

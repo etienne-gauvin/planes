@@ -1,6 +1,7 @@
 define (require) ->
     
     Entity = require 'cs!game/entities/Entity'
+    Bullet = require 'cs!game/entities/Bullet'
     floor = Math.floor
     
     class Plane extends Entity
@@ -16,14 +17,14 @@ define (require) ->
             @width =  24 * 3
             @height = 16 * 3
             
+            # Booléens pour déplacer l'avion verticalement
+            @goUp = @goDown = @goForward = @goBackward = no
+            
             # Limites de vitesse (en pixels/s)
             @minVSpeed = -250
             @maxVSpeed = 300
             @minHSpeed = -300
             @maxHSpeed = 200
-            
-            # Booléens pour déplacer l'avion verticalement
-            @goUp = @goDown = @goForward = @goBackward = no
             
             # Gain de vitesse lors du déplacement (en pixels/s^-1)
             @speedGainUphill = 900
@@ -51,9 +52,14 @@ define (require) ->
             
             # Retourne l'angle actuel en degrés selon la vitesse verticale (read only)
             @set 'angle', ->
-            @get 'angle', => @vSpeedPercentage * 12
+            @get 'angle', => @vSpeedPercentage * 2.5
             
+            # Tirer
+            @shoot = no
             
+            # Cadence de tir
+            @gunShootCadency = 0.2
+            @gunLastShoot = 0
                 
         
         # Mise à jour
@@ -61,11 +67,20 @@ define (require) ->
         handleUpdate: (dt) ->
             @updateVelocity(dt)
             @updatePosition(dt)
+            @updateGun(dt)
             
         
         # Affichage
         # @param CanvasRenderingContext2D
         handleDraw: (ctx) ->
+            
+            ctx.save()
+            ctx.translate(floor(@x + @width * 0.5), floor(@y + @height * 0.5))
+            ctx.rotate(@angle/3*15 * Math.PI / 180)
+            ctx.translate(floor(- @width * 0.5), floor(- @height * 0.5))
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'
+            #ctx.fillRect(@width*.5, @height*.5, 1000, 3)
+            ctx.restore()
             
             ctx.save()
             ctx.translate(floor(@x + @width * 0.5), floor(@y + @height * 0.5))
@@ -105,3 +120,10 @@ define (require) ->
             @velX = @maxHSpeed if @velX > @maxHSpeed
             @velX = @minHSpeed if @velX < @minHSpeed
         
+        # Tirer si nécessaire
+        updateGun: (dt) ->
+            @gunLastShoot += dt
+            if @shoot and @gunLastShoot >= @gunShootCadency
+                @gunLastShoot = 0
+                @scene.addChild(new Bullet(@scene, @))
+                
