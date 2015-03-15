@@ -17,8 +17,15 @@ define (require) ->
             @width = @game.canvas.width
             @height = @game.canvas.height
             
+            # Layer d'affichage du HUD
+            # Pour éviter de le recalculer à chaque frame
+            @hud = null
+            @markHUDForUpdate = yes
+            
+            # Fond
             @addChild new Background @
             
+            # Joueur principal
             @hero = new HeroPlaneA @
             @hero.y = @game.canvas.height*.5 - @hero.height*.5
             @addChild @hero
@@ -40,6 +47,11 @@ define (require) ->
             ctx.restore()
             
             @drawEntities(ctx)
+            
+            if @markHUDForUpdate
+                @markHUDForUpdate = no
+                @game.hudctx.clearRect(0, 0, @width, @height)
+                @drawHUD(@game.hudctx)
         
         # Lors de l'appui sur une touche
         handleKeyDown: (event) ->
@@ -63,3 +75,14 @@ define (require) ->
                 @hero.velY = velY
                 
                 @addChild @hero
+        
+        # Mettre à jour l'HUD
+        drawHUD: (ctx) ->
+            ctx.save()
+            
+            ctx.fillStyle = 'rgba(29, 19, 12, 0.8)'
+            for i in [1..@hero.ammo]
+                ctx.fillRect(18 + i * 6, @height - 18 - 9, 3, 9)
+            
+            ctx.restore()
+        

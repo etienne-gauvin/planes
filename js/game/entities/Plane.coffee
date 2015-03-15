@@ -38,30 +38,21 @@ define (require) ->
             @speedLossForward = 600
             @speedLossBackward = 600
             
-            # Représentation de la vitesse verticale de l'avion (read only)
-            # comprise entre -1 (min) et 1 (max)
-            @set 'vSpeedPercentage', ->
-            @get 'vSpeedPercentage', =>
-                vSpeedPercentage = - @velY / @minVSpeed if @velY < 0
-                vSpeedPercentage =   @velY / @maxVSpeed if @velY > 0
-                return vSpeedPercentage or 0
-            
-            # Retourne le numéro de frame actuel selon la vitesse verticale (read only)
-            @set 'frame', ->
-            @get 'frame', => floor(@vSpeedPercentage * 3 + 0.5)
-            
             # Retourne l'angle actuel en degrés selon la vitesse verticale (read only)
             @set 'angle', ->
-            @get 'angle', => @vSpeedPercentage * 2.5
+            @get 'angle', => @vSpeedPercentage() * 2.5
             
             # Tirer
             @shoot = no
+            
+            # Munitions restantes
+            @ammo = 0
             
             # Cadence de tir
             @gunShootCadency = 0.15
             @gunLastShoot = 0
             @gunPrecision = 0.5
-                
+            
         
         # Mise à jour
         # @param Number dt
@@ -69,27 +60,27 @@ define (require) ->
             @updateVelocity(dt)
             @updatePosition(dt)
             @updateGun(dt)
-            
         
+        # Représentation de la vitesse verticale de l'avion
+        # comprise entre -1 (min) et 1 (max)
+        vSpeedPercentage: ->
+            vSpeedPercentage = - @velY / @minVSpeed if @velY < 0
+            vSpeedPercentage =   @velY / @maxVSpeed if @velY > 0
+            return vSpeedPercentage or 0
+
         # Affichage
         # @param CanvasRenderingContext2D
         handleDraw: (ctx) ->
             
-            ctx.save()
-            ctx.translate(floor(@x + @width * 0.5), floor(@y + @height * 0.5))
-            ctx.rotate(@angle/3*15 * Math.PI / 180)
-            ctx.translate(floor(- @width * 0.5), floor(- @height * 0.5))
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'
-            #ctx.fillRect(@width*.5, @height*.5, 1000, 3)
-            ctx.restore()
+            frame = floor(@vSpeedPercentage() * 3 + 0.5)
             
             ctx.save()
             ctx.translate(floor(@x + @width * 0.5), floor(@y + @height * 0.5))
-            ctx.rotate(@frame/3*15 * Math.PI / 180)
+            ctx.rotate(frame/3*15 * Math.PI / 180)
             ctx.translate(floor(- @width * 0.5), floor(- @height * 0.5))
             
             ctx.drawImage(@image,
-                          0, @height * (@frame + 3),
+                          0, @height * (frame + 3),
                           @width, @height,
                           0, 0,
                           @width, @height)
@@ -124,7 +115,8 @@ define (require) ->
         # Tirer si nécessaire
         updateGun: (dt) ->
             @gunLastShoot += dt
-            if @shoot and @gunLastShoot >= @gunShootCadency
+            if @shoot and @gunLastShoot >= @gunShootCadency and @ammo > 0
                 @gunLastShoot = 0
+                @ammo--
                 @scene.addChild(new Bullet(@scene, @, @angle + (Math.random()-.5)*@gunPrecision))
                 

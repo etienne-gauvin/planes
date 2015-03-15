@@ -41,6 +41,13 @@ define (require) ->
             @scene.addEventListener('keydown', (event) => @handleKeyDown(event))
             @scene.addEventListener('keyup', (event) => @handleKeyUp(event))
         
+        # Détermine si l'entité est hors de l'écran
+        isOffScreen: ->
+            @x + @width < 0 or
+            @y + @height < 0 or
+            @x > @scene.width or
+            @y > @scene.height
+        
         # Mise à jour de la position de l'entité en fonction de sa vitesse
         updatePosition: (dt) ->
             @x += @velX * dt

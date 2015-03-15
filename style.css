@@ -6,11 +6,22 @@ html, body {
     font-family: monospace;
     text-align: center;
 }
+main {
+    position: relative;
+    width: 960px;
+    height: 600px;
+    margin: auto;
+}
 canvas {
     display: block;
-    margin: auto;
-    background-color: #bbedf3;
+    top: 0;
+    left: 0;
+    position: absolute;
+    
     border-radius: 4px;
+}
+#canvas {
+    background-color: #bbedf3;
 }
 footer {
     margin-top: 1em;

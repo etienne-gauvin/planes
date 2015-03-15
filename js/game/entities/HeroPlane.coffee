@@ -14,6 +14,10 @@ define (require) ->
             
             @image = @scene.game.assets.heroPlaneA
             
+            # Munitions
+            @ammoMax = 40
+            @ammo = 40
+            
         
         # Mise à jour
         # @param Number dt
@@ -31,3 +35,6 @@ define (require) ->
             @updateVelocityToKeepOnScreen(dt)
             @updatePosition(dt)
             @updateGun(dt)
+            
+            if @isOffScreen()
+                ;

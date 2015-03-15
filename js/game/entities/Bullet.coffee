@@ -28,11 +28,13 @@ define (require) ->
         handleUpdate: (dt) ->
             @updatePosition(dt)
             
+            # Destrcution si sortie de l'écran
+            if @isOffScreen()
+                @scene.removeChild @
         
         # Affichage
         # @param CanvasRenderingContext2D
         handleDraw: (ctx) ->
-            
             ctx.save()
             ctx.translate(@x + @length*.5, @y)
             ctx.rotate(@angle/3*15 * Math.PI/180)

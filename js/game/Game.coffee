@@ -13,7 +13,9 @@ define (require) ->
             # Création des propriétés
             @config = config
             @canvas = document.getElementById('canvas')
+            @hudcanvas = document.getElementById('hudcanvas')
             @ctx = @canvas.getContext('2d')
+            @hudctx = @hudcanvas.getContext('2d')
             
             # Temps écoulé depuis le démarrage du jeu
             @t = 0
@@ -31,12 +33,19 @@ define (require) ->
             
             # Scene actuelle
             @scene = @scenes.loading
+            
+            # Pause
+            @pause = no
         
         # Démarrer le jeu
         start: ->
             # Application des écouteurs
             window.addEventListener('keydown', (e) => @handleKeyDown(e))
             window.addEventListener('keyup', (e) => @handleKeyUp(e))
+            
+            document.addEventListener "visibilitychange", =>
+                log document.hidden
+                @pause = document.hidden
             
             # File de chargement des assets
             loadQueue = new createjs.LoadQueue()
@@ -68,8 +77,10 @@ define (require) ->
         
         # Mise à jour du jeu puis de l'affichage
         handleUpdate: (dt) ->
-            @t += dt
-            @scene.handleUpdate(dt)
+            if not @pause
+                @t += dt
+                @scene.handleUpdate(dt)
+            
             @scene.handleDraw(@ctx)
         
         # Lors de l'appui sur une touche
