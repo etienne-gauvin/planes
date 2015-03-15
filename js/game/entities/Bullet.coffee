@@ -10,7 +10,7 @@ define (require) ->
             super @scene
             
             @x = @plane.x + @plane.width + 3
-            @y = @plane.y + @plane.height / 2 + (@plane.vSpeedPercentage + 0.1) *   16
+            @y = @plane.y + @plane.height / 2 + (@plane.vSpeedPercentage() + 0.1) *   16
             
             # Vitesse (en pixels/s)
             @speed = 800
