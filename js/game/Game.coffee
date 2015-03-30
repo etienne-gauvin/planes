@@ -44,8 +44,7 @@ define (require) ->
             window.addEventListener('keyup', (e) => @handleKeyUp(e))
             
             document.addEventListener "visibilitychange", =>
-                log document.hidden
-                @pause = document.hidden
+                @pause = yes if document.hidden
             
             # File de chargement des assets
             loadQueue = new createjs.LoadQueue()
