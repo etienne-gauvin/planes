@@ -24,10 +24,10 @@ define (require) ->
         handleUpdate: (dt) ->
             kb = @scene.game.keyboard
             
-            @goUp = kb.isDown(kb.UP)
-            @goDown = kb.isDown(kb.DOWN)
-            @goForward = kb.isDown(kb.RIGHT)
-            @goBackward = kb.isDown(kb.LEFT)
+            @goUp = kb.isDown(kb.UP) or kb.isDown(kb.Z)
+            @goDown = kb.isDown(kb.DOWN) or kb.isDown(kb.S)
+            @goForward = kb.isDown(kb.RIGHT) or kb.isDown(kb.D)
+            @goBackward = kb.isDown(kb.LEFT) or kb.isDown(kb.Q)
             
             @shoot = kb.isDown(kb.SPACE)
             
@@ -37,4 +37,5 @@ define (require) ->
             @updateGun(dt)
             
             if @isOffScreen()
-                ;
+                @x = 10
+                @y = @scene.height / 2 - @height / 2

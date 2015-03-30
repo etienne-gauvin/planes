@@ -7,6 +7,12 @@ define ->
             @DOWN   = 40
             @RIGHT  = 39
             @LEFT   = 37
+            
+            @Z      = 90
+            @Q      = 81
+            @S      = 83
+            @D      = 68
+            
             @SPACE  = 32
             @C      = 67
             
