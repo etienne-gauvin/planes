@@ -119,4 +119,5 @@ define (require) ->
                 @gunLastShoot = 0
                 @ammo--
                 @scene.addChild(new Bullet(@scene, @, @angle + (Math.random()-.5)*@gunPrecision))
+                @scene.markHUDForUpdate = yes
                 

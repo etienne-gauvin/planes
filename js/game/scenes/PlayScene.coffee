@@ -80,9 +80,11 @@ define (require) ->
         drawHUD: (ctx) ->
             ctx.save()
             
-            ctx.fillStyle = 'rgba(29, 19, 12, 0.8)'
-            for i in [1..@hero.ammo]
-                ctx.fillRect(18 + i * 6, @height - 18 - 9, 3, 9)
+            ctx.fillStyle = 'rgba(47, 26, 10, 0.2)'
+            
+            if @hero.ammo > 0
+                for i in [1..@hero.ammo]
+                    ctx.fillRect(18 + i * 6, @height - 18 - 15, 3, 15)
             
             ctx.restore()
         
