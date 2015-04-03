@@ -23,4 +23,8 @@ define (require) ->
             @speedGainDownhill = 500
             @speedGainForward = 700
             @speedGainBackward = 1000
+
+            # Cadence de tir
+            @gunShootCadency = 0.10
+            @gunPrecision = 0.7
             

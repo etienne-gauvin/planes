@@ -1,9 +1,9 @@
-# Classe abstraite représentant une scène
 define (require) ->
+    'use strict'
     
     easeout = require('cs!helper').easeout
     
-    Scene = require 'cs!game/scenes/Scene'
+    Scene = require 'cs!game/core/entities/Scene'
     Background = require 'cs!game/entities/Background'
     
     HeroPlaneA = require 'cs!game/entities/HeroPlaneA'
@@ -14,13 +14,12 @@ define (require) ->
         
         # Démarrage de la scène
         handleStart: ->
-            @width = @game.canvas.width
-            @height = @game.canvas.height
+            @width = @game.width
+            @height = @game.height
             
             # Layer d'affichage du HUD
             # Pour éviter de le recalculer à chaque frame
             @hud = null
-            @markHUDForUpdate = yes
             
             # Fond
             @addChild new Background @
@@ -35,23 +34,18 @@ define (require) ->
         handleUpdate: (dt) ->
             super dt
             
-            if @game.t < 1
+            if @hero and @game.t < 1
                 @hero.x = easeout(@game.t, 1, - @hero.width, @hero.width * 2)
         
         # Affichage de la scène
         # @param CanvasRenderingContext2D
-        handleDraw: (ctx) ->
-            ctx.save()
-            ctx.fillStyle = '#bbedf3'
-            ctx.fillRect(0, 0, @game.canvas.width, @game.canvas.height)
-            ctx.restore()
+        handleDraw:  ->
+            @ctx.save()
+            @ctx.fillStyle = '#bbedf3'
+            @ctx.fillRect(0, 0, @game.canvas.width, @game.canvas.height)
+            @ctx.restore()
             
-            @drawEntities(ctx)
-            
-            if @markHUDForUpdate
-                @markHUDForUpdate = no
-                @game.hudctx.clearRect(0, 0, @width, @height)
-                @drawHUD(@game.hudctx)
+            super
         
         # Lors de l'appui sur une touche
         handleKeyDown: (event) ->
@@ -59,8 +53,10 @@ define (require) ->
                 @removeChild @hero
                 x = @hero.x
                 y = @hero.y
-                velX = @hero.velX
-                velY = @hero.velY
+                
+                vel =
+                    x: @hero.vel.x
+                    y: @hero.vel.y
                 
                 if @hero instanceof HeroPlaneA
                     @hero = new HeroPlaneB @
@@ -71,8 +67,8 @@ define (require) ->
                 
                 @hero.x = x
                 @hero.y = y
-                @hero.velX = velX
-                @hero.velY = velY
+                @hero.vel.x = vel.x
+                @hero.vel.y = vel.y
                 
                 @addChild @hero
         

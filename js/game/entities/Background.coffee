@@ -1,6 +1,6 @@
 define (require) ->
     
-    Entity = require 'cs!game/entities/Entity'
+    Entity = require 'cs!game/core/Entity'
     easeout = require('cs!helper').easeout
     
     class Background extends Entity
@@ -38,8 +38,8 @@ define (require) ->
         
         # Affichage
         # @param CanvasRenderingContext2D
-        handleDraw: (ctx) ->
-            ctx.save()
+        handleDraw: ->
+            @ctx.save()
             
             l = 0
             for layer in @layers
@@ -56,12 +56,12 @@ define (require) ->
                 y = -y if layer.oncoming == 'top'
                 
                 # Configuration de l'opacité
-                ctx.globalAlpha = layer.alpha or 1
+                @ctx.globalAlpha = layer.alpha or 1
                 
                 # Affichage du nombre de fonds nécessaire
                 while x < @scene.width
-                    ctx.drawImage(layer.image, x, y)
+                    @ctx.drawImage(layer.image, x, y)
                     x += @width
             
-            ctx.restore()
+            @ctx.restore()
         

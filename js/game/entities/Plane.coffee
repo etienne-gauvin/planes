@@ -1,14 +1,15 @@
 define (require) ->
+    'use strict'
     
-    Entity = require 'cs!game/entities/Entity'
+    Entity = require 'cs!game/core/Entity'
     Bullet = require 'cs!game/entities/Bullet'
     floor = Math.floor
     
     class Plane extends Entity
         
         # Constructeur
-        constructor: (@scene) ->
-            super @scene
+        constructor: (@parent) ->
+            super @parent
             
             # Spritesheet de l'avion
             @image = null
@@ -20,38 +21,41 @@ define (require) ->
             # Booléens pour déplacer l'avion verticalement
             @goUp = @goDown = @goForward = @goBackward = no
             
-            # Limites de vitesse (en pixels/s)
-            @minVSpeed = -250
-            @maxVSpeed = 300
-            @minHSpeed = -300
-            @maxHSpeed = 200
+            @vel =
+                x: @vel.x
+                y: @vel.y
+                
+                # Limites de vitesse (en pixels/s)
+                ymax: 300
+                ymin: -250
+                xmax: 200
+                xmin: -300
+                
+                # Gain de vitesse lors du déplacement (en pixels/s^-1)
+                gain:
+                    uphill:     900
+                    downhill:   1000
+                    forward:    500
+                    backward:   1000
             
-            # Gain de vitesse lors du déplacement (en pixels/s^-1)
-            @speedGainUphill = 900
-            @speedGainDownhill = 1000
-            @speedGainForward = 500
-            @speedGainBackward = 1000
+                # Perte de vitesse lorsque pas de déplacement (en pixels/s^-1)
+                loss:
+                    uphill:     600
+                    downhill:   500
+                    forward:    600
+                    backward:   600
             
-            # Perte de vitesse lorsque pas de déplacement (en pixels/s^-1)
-            @speedLossUphill = 600
-            @speedLossDownhill = 500
-            @speedLossForward = 600
-            @speedLossBackward = 600
-            
-            # Retourne l'angle actuel en degrés selon la vitesse verticale (read only)
+            # Retourne l'angle actuel selon la vitesse verticale (read only)
             @set 'angle', ->
-            @get 'angle', => @vSpeedPercentage() * 2.5
+            @get 'angle', => @getYSpeedPercentage() * 2.5
             
-            # Tirer
-            @shoot = no
-            
-            # Munitions restantes
-            @ammo = 0
-            
-            # Cadence de tir
-            @gunShootCadency = 0.15
-            @gunLastShoot = 0
-            @gunPrecision = 0.5
+            # Mitrailleuse
+            @gun =
+                cadency: 0.15
+                lastShoot: 0
+                precision: 0.5
+                shoot: no
+                ammo: 100
             
         
         # Mise à jour
@@ -63,61 +67,82 @@ define (require) ->
         
         # Représentation de la vitesse verticale de l'avion
         # comprise entre -1 (min) et 1 (max)
-        vSpeedPercentage: ->
-            vSpeedPercentage = - @velY / @minVSpeed if @velY < 0
-            vSpeedPercentage =   @velY / @maxVSpeed if @velY > 0
-            return vSpeedPercentage or 0
+        getYSpeedPercentage: ->
+            ySpeedPercentage = - @vel.y / @vel.ymin if @vel.y < 0
+            ySpeedPercentage =   @vel.y / @vel.ymax if @vel.y > 0
+            return ySpeedPercentage or 0
 
         # Affichage
         # @param CanvasRenderingContext2D
-        handleDraw: (ctx) ->
+        handleDraw: ->
             
-            frame = floor(@vSpeedPercentage() * 3 + 0.5)
+            frame = floor(@getYSpeedPercentage() * 3 + 0.5)
             
-            ctx.save()
-            ctx.translate(floor(@x + @width * 0.5), floor(@y + @height * 0.5))
-            ctx.rotate(frame/3*15 * Math.PI / 180)
-            ctx.translate(floor(- @width * 0.5), floor(- @height * 0.5))
+            @ctx.save()
+            @ctx.translate(floor(@x + @width * 0.5), floor(@y + @height * 0.5))
+            @ctx.rotate(frame/3*15 * Math.PI / 180)
+            @ctx.translate(floor(- @width * 0.5), floor(- @height * 0.5))
             
-            ctx.drawImage(@image,
+            @ctx.drawImage(@image,
                           0, @height * (frame + 3),
                           @width, @height,
                           0, 0,
                           @width, @height)
             
-            ctx.restore()
+            @ctx.restore()
         
         
         # Appliquer le déplacement vertical
         updateVelocity: (dt) ->
             
             # Gagner de la vitesse si un déplacement horizantal est demandé
-            @velY += @speedGainDownhill * dt if @goDown
-            @velY -= @speedGainUphill   * dt if @goUp
-            @velX += @speedGainForward  * dt if @goForward
-            @velX -= @speedGainBackward * dt if @goBackward
+            @vel.y += @vel.gain.downhill * dt if @goDown
+            @vel.y -= @vel.gain.uphill   * dt if @goUp
+            @vel.x += @vel.gain.forward  * dt if @goForward
+            @vel.x -= @vel.gain.backward * dt if @goBackward
             
             # Appliquer une perte de vitesse si aucun sens de déplacement n'est demandé
             if not @goDown and not @goUp
-                @velY += (@velY / @minVSpeed) * @speedLossUphill   * dt if @velY < 0
-                @velY -= (@velY / @maxVSpeed) * @speedLossDownhill * dt if @velY > 0
+                @vel.y += (@vel.y / @vel.ymin) * @vel.loss.uphill   * dt if @vel.y < 0
+                @vel.y -= (@vel.y / @vel.ymax) * @vel.loss.downhill * dt if @vel.y > 0
             
             if not @goForward and not @goBackward
-                @velX += (@velX / @minHSpeed) * @speedLossForward   * dt if @velX < 0
-                @velX -= (@velX / @maxHSpeed) * @speedLossBackward  * dt if @velX > 0
+                @vel.x += (@vel.x / @vel.xmin) * @vel.loss.forward   * dt if @vel.x < 0
+                @vel.x -= (@vel.x / @vel.xmax) * @vel.loss.backward  * dt if @vel.x > 0
             
             # Limiter la vitesse
-            @velY = @maxVSpeed if @velY > @maxVSpeed
-            @velY = @minVSpeed if @velY < @minVSpeed
-            @velX = @maxHSpeed if @velX > @maxHSpeed
-            @velX = @minHSpeed if @velX < @minHSpeed
+            @vel.y = @vel.ymax if @vel.y > @vel.ymax
+            @vel.y = @vel.ymin if @vel.y < @vel.ymin
+            @vel.x = @vel.xmax if @vel.x > @vel.xmax
+            @vel.x = @vel.xmin if @vel.x < @vel.xmin
         
         # Tirer si nécessaire
         updateGun: (dt) ->
-            @gunLastShoot += dt
-            if @shoot and @gunLastShoot >= @gunShootCadency and @ammo > 0
-                @gunLastShoot = 0
-                @ammo--
-                @scene.addChild(new Bullet(@scene, @, @angle + (Math.random()-.5)*@gunPrecision))
-                @scene.markHUDForUpdate = yes
+            @gun.lastShoot += dt
+            if @gun.shoot and @gun.lastShoot >= @gun.cadency and @gun.ammo > 0
+                @gun.lastShoot = 0
+                @gun.ammo--
+                @parent.addChild new Bullet(@, @degAngle + (Math.random()-.5) * @gun.precision)
+                
+        # Garder l'avion dans les limites de l'écran
+        updateVelocityToKeepOnScreen: ->
+            
+            # Limiter la vitesse sur les bords de l'écran
+            padding = 100
+            
+            # Limitation en haut
+            if @vel.y < 0 and @y < padding
+                @vel.y *= Math.pow((@y / padding), 0.1) or 0
+            
+            # Limitation en bas
+            if @vel.y > 0 and @parent.height - @y - @height < padding
+                @vel.y *= Math.pow(((@parent.height - @y - @height) / padding), 0.1) or 0
+                
+            # Limitation à droite
+            if @vel.x < 0 and @x < padding
+                @vel.x *= Math.pow((@x / padding), 0.1) or 0
+                
+            # Limitation à gauche
+            if @vel.x > 0 and @parent.width - @x - @width < padding
+                @vel.x *= Math.pow(((@parent.width - @x - @width) / padding), 0.1) or 0
                 

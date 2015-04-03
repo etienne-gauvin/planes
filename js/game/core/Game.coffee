@@ -1,21 +1,21 @@
 define (require) ->
-    
-    LoadingScene = require 'cs!game/scenes/LoadingScene'
-    PlayScene = require 'cs!game/scenes/PlayScene'
-    Keyboard = require 'cs!game/Keyboard'
-    
-    window.log = (params...) -> console.log params...
 
-    class Game
+    Entity = require 'cs!game/core/Entity'
+    Keyboard = require 'cs!game/core/Keyboard'
+    
+    class Game extends Entity
         # Constructeur
-        constructor: (config) ->
+        constructor: (@config) ->
             
-            # Création des propriétés
-            @config = config
+            @game = @
             @canvas = document.getElementById('canvas')
-            @hudcanvas = document.getElementById('hudcanvas')
             @ctx = @canvas.getContext('2d')
-            @hudctx = @hudcanvas.getContext('2d')
+            
+            super @
+            
+            # Dimensions
+            @width = @canvas.width
+            @height = @canvas.height
             
             # Temps écoulé depuis le démarrage du jeu
             @t = 0
@@ -24,38 +24,34 @@ define (require) ->
             @assets = {}
             
             # Représentation du clavier
-            @keyboard = new Keyboard
+            @keyboard = new Keyboard @
             
             # Scenes
-            @scenes =
-                loading: new LoadingScene @
-                play: new PlayScene @
+            @scenes = {}
             
             # Scene actuelle
-            @scene = @scenes.loading
+            @scene = null
             
             # Pause
             @pause = no
         
         # Démarrer le jeu
         start: ->
-            # Application des écouteurs
-            window.addEventListener('keydown', (e) => @handleKeyDown(e))
-            window.addEventListener('keyup', (e) => @handleKeyUp(e))
+            # Application des écouteurs clavier
+            window.addEventListener 'keydown', (e) => @handleKeyDown(e)
+            window.addEventListener 'keyup', (e) => @handleKeyUp(e)
             
-            document.addEventListener "visibilitychange", =>
-                @pause = yes if document.hidden
+            # Changement de la visibilité de la fenêtre
+            document.addEventListener "visibilitychange", => @handleVisibilityChange(not document.hidden)
             
             # File de chargement des assets
             loadQueue = new createjs.LoadQueue()
             loadQueue.loadManifest(@config.assetsManifest, false, @config.assetsBasePath)
 
             # A la fin du chargement, lancer le jeu
-            loadQueue.on "complete", (e) => @scenes.loading.handleComplete(e)
-            loadQueue.on "progress", (e) => @scenes.loading.handleProgress(e)
-            loadQueue.on "fileload", (e) =>
-                @assets[e.item.id] = e.result
-                @scenes.loading.handleFileLoad(e)
+            loadQueue.on "complete", (e) => @handleLoadComplete(e)
+            loadQueue.on "progress", (e) => @handleLoadProgress(e)
+            loadQueue.on "fileload", (e) => @handleFileLoad(e)
 
             # Lancement du chargement
             @scenes.loading.handleStart()
@@ -68,7 +64,7 @@ define (require) ->
                 now = (new Date).getTime()
                 dt = now - lastTime
                 lastTime = now
-                @handleUpdate(dt/1000)
+                @handleUpdate(dt / 1000)
                 window.requestAnimationFrame anim
             
             window.requestAnimationFrame anim
@@ -78,23 +74,41 @@ define (require) ->
         handleUpdate: (dt) ->
             if not @pause
                 @t += dt
-                @scene.handleUpdate(dt)
+                @scene.handleUpdate(dt) if @scene
             
-            @scene.handleDraw(@ctx)
+            @scene.handleDraw(@ctx) if @scene
         
         # Lors de l'appui sur une touche
         handleKeyDown: (event) ->
             event.preventDefault() if event.keyCode < 100
             @keyboard.keys[event.keyCode] = true
-            @scene.handleKeyDown(event)
+            @scene.handleKeyDown(event) if @scene
 
         # Lors du relâchement d'une touche
         handleKeyUp: (event) ->
             @keyboard.keys[event.keyCode] = false
-            @scene.handleKeyUp(event)
+            @scene.handleKeyUp(event) if @scene
+        
+        # Lors changement de visibilité de la fenêtre
+        handleVisibilityChange: (visible) ->
+            @pause = yes if not visible
+        
+        # Progression du chargement
+        handleLoadProgress: (e) ->
+        
+        # Progression du chargement
+        handleFileLoad: (e) ->
+            @assets[e.item.id] = e.result
+        
+        # Chargement terminé
+        handleLoadComplete: (e) ->
         
         # Changer de scène
         switchToScene: (scene) ->
-            @scene.handleStop =>
+            if @scene
+                @scene.handleStop =>
+                    @scene = scene
+                    @scene.handleStart()
+            else
                 @scene = scene
                 @scene.handleStart()

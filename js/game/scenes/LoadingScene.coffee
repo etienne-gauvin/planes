@@ -1,9 +1,11 @@
-# Classe abstraite représentant une scène
-define ['cs!game/scenes/Scene'], (Scene) ->
+define (require) ->
+    
+    Scene = require 'cs!game/core/entities/Scene'
+    
     class LoadingScene extends Scene
         
         # Progression du chargement
-        handleProgress: (e) ->
+        handleLoadProgress: (e) ->
             @progress = e.progress
         
         # Progression du chargement
@@ -16,15 +18,15 @@ define ['cs!game/scenes/Scene'], (Scene) ->
         # Affichage
         handleDraw: (ctx) ->
             ctx.fillStyle = '#bbedf3'
-            ctx.fillRect(0, 0, @game.canvas.width, @game.canvas.height)
+            ctx.fillRect(0, 0, @game.width, @game.height)
             
             ctx.fillStyle = '#db7d39'
             for i in [0 .. 3]
                 if i < Math.floor(@game.t * 3) % 4
-                    ctx.fillRect(12 + 24 * i, @game.canvas.height - 24, 12, 12)
+                    ctx.fillRect(12 + 24 * i, @game.height - 24, 12, 12)
         
         # Chargement terminé
-        handleComplete: ->
+        handleLoadComplete: ->
             console.log 'Chargement terminé'
             @game.switchToScene(@game.scenes.play)
         

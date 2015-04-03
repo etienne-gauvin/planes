@@ -1,17 +1,14 @@
 define (require) ->
     
-    Scene = require 'cs!game/scenes/Scene'
+    Layer = require 'cs!game/core/entities/Layer'
     
-    class HUD extends Scene
+    class HUD extends Layer
         
         # Constructeur
         constructor: (@game) ->
             super @game
             
             @markForUpdate = yes
-        
-        # Démarrage de la scène
-        handleStart: ->
         
         # Mise à jour de la scène
         # @param Number dt

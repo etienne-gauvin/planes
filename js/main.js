@@ -11,7 +11,7 @@ requirejs.config({
 requirejs(
     [
         'cs!game/config',
-        'cs!game/Game',
+        'cs!game/PlaneGame',
         'easeljs',
         'preloadjs'
     ],
@@ -20,6 +20,8 @@ requirejs(
     function (config, Game) {
         var game = new Game(config)
         game.start()
+        
+        
         
         // Objet global, plus pratique pour le développement
         window.game = game
