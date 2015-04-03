@@ -21,7 +21,7 @@ define (require) ->
             
             # Centre absolu de l'objet, en fonction de sa taille (read only)
             @get 'centerX', => @x + Math.cos(@angle) * @width / 2
-            @get 'centerY', => @y + Math.sin(@angle) * @height / 2
+            @get 'centerY', => @y + Math.sin(@angle - Math.PI) * @height / 2
             @set 'centerX', =>
             @set 'centerY', =>
             
@@ -49,7 +49,6 @@ define (require) ->
             @updatable = yes
         
         ## Méthodes de gestion des évènements
-        ## (destinées à être écrasées)
         
         # Gérer une mise à jour
         # @param Number dt Temps en secondes depuis la dernière mise à jour

@@ -3,6 +3,7 @@ define (require) ->
     
     Entity = require 'cs!game/core/Entity'
     Bullet = require 'cs!game/entities/Bullet'
+    BulletFireShotSprite = require 'cs!game/entities/BulletFireShotSprite'
     floor = Math.floor
     
     class Plane extends Entity
@@ -56,6 +57,7 @@ define (require) ->
                 precision: 0.5
                 shoot: no
                 ammo: 100
+                fireShotSprite: new BulletFireShotSprite @
             
         
         # Mise à jour
@@ -89,6 +91,8 @@ define (require) ->
                           0, 0,
                           @width, @height)
             
+            @gun.fireShotSprite.handleDraw()
+            
             @ctx.restore()
         
         
@@ -119,10 +123,15 @@ define (require) ->
         # Tirer si nécessaire
         updateGun: (dt) ->
             @gun.lastShoot += dt
+            @gun.fireShotSprite.handleUpdate(dt)
             if @gun.shoot and @gun.lastShoot >= @gun.cadency and @gun.ammo > 0
                 @gun.lastShoot = 0
                 @gun.ammo--
-                @parent.addChild new Bullet(@, @angle + (Math.random()-.5) * @gun.precision)
+                
+                shotAngle = @angle + (Math.random()-.5) * @gun.precision
+                
+                @gun.fireShotSprite.run()
+                @parent.addChild new Bullet(@, shotAngle)
                 
         # Garder l'avion dans les limites de l'écran
         updateVelocityToKeepOnScreen: ->
