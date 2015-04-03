@@ -5,26 +5,12 @@ define (require) ->
     class HeroPlaneB extends HeroPlane
         
         # Constructeur
-        # @param Scene @scene
-        # @param String @version a|b|c
-        constructor: (@scene) ->
-            super @scene
+        constructor: (@parent) ->
+            super @parent
             
-            @image = @scene.game.assets.heroPlaneB
+            @image = @game.assets.heroPlaneB
             
-            # Limites de vitesse (en pixels/s)
-            @minVSpeed = -300
-            @maxVSpeed = 350
-            @minHSpeed = -250
-            @maxHSpeed = 250
-            
-            # Gain de vitesse lors du déplacement (en pixels/s^-1)
-            @speedGainUphill = 500
-            @speedGainDownhill = 500
-            @speedGainForward = 700
-            @speedGainBackward = 1000
-
-            # Cadence de tir
-            @gunShootCadency = 0.10
-            @gunPrecision = 0.7
+            # Tirs
+            @gun.cadency = 0.10
+            @gun.precision = 1.0
             
