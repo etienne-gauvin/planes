@@ -122,7 +122,7 @@ define (require) ->
             if @gun.shoot and @gun.lastShoot >= @gun.cadency and @gun.ammo > 0
                 @gun.lastShoot = 0
                 @gun.ammo--
-                @parent.addChild new Bullet(@, @degAngle + (Math.random()-.5) * @gun.precision)
+                @parent.addChild new Bullet(@, @angle + (Math.random()-.5) * @gun.precision)
                 
         # Garder l'avion dans les limites de l'écran
         updateVelocityToKeepOnScreen: ->
