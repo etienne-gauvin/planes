@@ -91,7 +91,7 @@ define (require) ->
         
         # Lors changement de visibilité de la fenêtre
         handleVisibilityChange: (visible) ->
-            @pause = yes if not visible
+            @pause = not visible
         
         # Progression du chargement
         handleLoadProgress: (e) ->
