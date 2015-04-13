@@ -4,7 +4,7 @@ define (require) ->
     Entity = require 'cs!game/core/Entity'
     Bullet = require 'cs!game/entities/Bullet'
     BulletFireShotSprite = require 'cs!game/entities/BulletFireShotSprite'
-    Explosion = require 'cs!game/entities/Explosion'
+    SmokeParticle = require 'cs!game/entities/SmokeParticle'
     floor = Math.floor
     
     class Plane extends Entity
@@ -65,8 +65,9 @@ define (require) ->
             @health = 100
             @destroyed = no
             
-            @parent.addChild new Explosion @parent, @x, @y
-            
+            # Effet de fumée
+            @smokeEffect =
+                lastParticle: 0
         
         # Mise à jour
         # @param Number dt
@@ -75,6 +76,7 @@ define (require) ->
             @updatePosition(dt)
             @updateGun(dt)
             @updateHealth(dt)
+            @updateSmokeEffect(dt)
             @updateChildren(dt)
         
         # Représentation de la vitesse verticale de l'avion
@@ -163,11 +165,18 @@ define (require) ->
         updateHealth: (dt) ->
             if @health <= 0 
                 if not @destroyed
-                    @explode()
+                    #@explode()
                 
                 else if @isOffGameScreen()
                     @parent.removeChild @
                     log "OVER"
+        
+        # Gérer l'effet de fumée derrière l'avion
+        updateSmokeEffect: (dt) ->
+            @smokeEffect.lastParticle += dt
+            if @smokeEffect.lastParticle > 0.5
+                @parent.addChild new SmokeParticle(@parent, @x + @width*.5, @y + @height*.5)
+                @smokeEffect.lastParticle = 0
         
         # Garder l'avion dans les limites de l'écran
         updateVelocityToKeepOnScreen: ->
@@ -192,12 +201,12 @@ define (require) ->
                 @vel.x *= Math.pow(((@parent.width - @x - @width) / padding), 0.1) or 0
         
         
-        # Détruire
+        ### Détruire
         explode: (callback) ->
             
             @destroyed = yes
             x = @x + @width / 2
             y = @y + @height / 2 + (@getYSpeedPercentage() + 0.1) * 16
             
-            @addChild(new Explosion @, @width/2, @height/2)
+            @addChild(new Explosion @, @width/2, @height/2)###
             
