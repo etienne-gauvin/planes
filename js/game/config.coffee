@@ -12,6 +12,5 @@ define
         
         { id: 'bulletFireShot', src: 'images/bulletFireShot.png' },
         { id: 'lum', src: 'images/lum.png' },
-        { id: 'explosion', src: 'images/explosion.png' },
         { id: 'smoke', src: 'images/smoke.png' },
     ]
