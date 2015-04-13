@@ -44,7 +44,6 @@ define (require) ->
                 @ctx.drawImage(
                     @image,
                     0, @m * @height,
-                    #0, Math.floor(@n * @image.height / @height) * @height,
                     @width,
                     @height,
                     0,
