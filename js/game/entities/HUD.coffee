@@ -13,7 +13,7 @@ define (require) ->
             @width = 3
             @height = 15
             
-            @weight = 300
+            @weight = 250
             
             @vel =
                 x: Math.random() * 100 - 50
@@ -23,7 +23,8 @@ define (require) ->
         handleUpdate: (dt) ->
             @vel.y += @weight * dt * 9.81
             @angle += @vel.ang * dt
-            @updatePosition(dt)
+            @updatePosition(dt)          
+            @parent.removeChild(@) if @isOffGameScreen()
             
         handleDraw: ->
             @ctx.save()
