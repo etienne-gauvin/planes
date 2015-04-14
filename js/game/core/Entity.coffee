@@ -57,7 +57,7 @@ define (require) ->
         
         # Gérer un nouvel affichage
         handleDraw: ->
-            @drawChildren(dt)
+            @drawChildren()
         
         # Destruction de l'entité
         # @param Function callback est appelée quand l'entité est bien détruite

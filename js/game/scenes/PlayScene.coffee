@@ -4,6 +4,7 @@ define (require) ->
     easeout = require('cs!helper').easeout
     
     Scene = require 'cs!game/core/entities/Scene'
+    HUD = require 'cs!game/entities/HUD'
     Background = require 'cs!game/entities/Background'
     
     HeroPlaneA = require 'cs!game/entities/HeroPlaneA'
@@ -19,7 +20,7 @@ define (require) ->
             
             # Layer d'affichage du HUD
             # Pour éviter de le recalculer à chaque frame
-            @hud = null
+            @hud = new HUD @
             
             # Fond
             @addChild new Background @
@@ -36,6 +37,8 @@ define (require) ->
             
             if @hero and @game.t < 1
                 @hero.x = easeout(@game.t, 1, - @hero.width, @hero.width * 2)
+            
+            @hud.handleUpdate(dt)
         
         # Affichage de la scène
         # @param CanvasRenderingContext2D
@@ -46,6 +49,8 @@ define (require) ->
             @ctx.restore()
             
             super
+            
+            @hud.handleDraw()
         
         # Lors de l'appui sur une touche
         handleKeyDown: (event) ->
@@ -71,16 +76,3 @@ define (require) ->
                 @hero.vel.y = vel.y
                 
                 @addChild @hero
-        
-        # Mettre à jour l'HUD
-        drawHUD: (ctx) ->
-            ctx.save()
-            
-            ctx.fillStyle = 'rgba(47, 26, 10, 0.2)'
-            
-            if @hero.ammo > 0
-                for i in [1..@hero.ammo]
-                    ctx.fillRect(18 + i * 6, @height - 18 - 15, 3, 15)
-            
-            ctx.restore()
-        
