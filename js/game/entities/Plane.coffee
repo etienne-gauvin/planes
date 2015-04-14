@@ -160,6 +160,7 @@ define (require) ->
                 
                 @gun.fireShotSprite.run()
                 @parent.addChild new Bullet(@, shotAngle)
+                createjs.Sound.play('shot')
         
         # Gérer la santé de l'avion
         updateHealth: (dt) ->

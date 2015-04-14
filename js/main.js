@@ -13,6 +13,7 @@ requirejs(
         'cs!game/config',
         'cs!game/PlaneGame',
         'easeljs',
+        'soundjs',
         'preloadjs'
     ],
     

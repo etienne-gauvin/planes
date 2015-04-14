@@ -1,6 +1,9 @@
 define
     assetsBasePath: 'assets/'
     assetsManifest: [
+        
+        # Images: 
+        
         { id: 'heroPlaneA', src: 'images/heroPlaneA.png' },
         { id: 'heroPlaneB', src: 'images/heroPlaneB.png' },
         { id: 'heroPlaneC', src: 'images/heroPlaneC.png' },
@@ -13,4 +16,8 @@ define
         { id: 'bulletFireShot', src: 'images/bulletFireShot.png' },
         { id: 'lum', src: 'images/lum.png' },
         { id: 'smoke', src: 'images/smoke.png' },
+        
+        # Sons
+        
+        { id: 'shot', src: 'sounds/single-shot.ogg' }
     ]
