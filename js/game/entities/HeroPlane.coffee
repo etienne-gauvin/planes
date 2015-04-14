@@ -8,12 +8,12 @@ define (require) ->
         # Constructeur
         # @param Scene @scene
         # @param String @version a|b|c
-        constructor: (@scene) ->
-            super @scene
+        constructor: (@parent) ->
+            super @parent
             
             @x = @y = 0
             
-            @image = @scene.game.assets.heroPlaneA
+            @image = @game.assets.images.heroPlaneA
             
             # Munitions
             @gun.ammoMax = 40

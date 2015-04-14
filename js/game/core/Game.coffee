@@ -46,6 +46,7 @@ define (require) ->
             
             # File de chargement des assets
             loadQueue = new createjs.LoadQueue()
+            loadQueue.installPlugin(createjs.Sound);
             loadQueue.loadManifest(@config.assetsManifest, false, @config.assetsBasePath)
 
             # A la fin du chargement, lancer le jeu
@@ -98,7 +99,8 @@ define (require) ->
         
         # Progression du chargement
         handleFileLoad: (e) ->
-            @assets[e.item.id] = e.result
+            @assets[e.item.type+'s'] = {} if not @assets[e.item.type+'s']?
+            @assets[e.item.type+'s'][e.item.id] = e.result
         
         # Chargement terminé
         handleLoadComplete: (e) ->

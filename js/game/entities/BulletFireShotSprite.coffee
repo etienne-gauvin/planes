@@ -9,8 +9,8 @@ define (require) ->
         constructor: (@parent) ->
             super @parent
             
-            @image = @game.assets.bulletFireShot
-            @lumImage = @game.assets.lum
+            @image = @game.assets.images.bulletFireShot
+            @lumImage = @game.assets.images.lum
             
             @width = 16 * 3
             @height = 7 * 3

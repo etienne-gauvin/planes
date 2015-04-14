@@ -11,7 +11,7 @@ define (require) ->
         constructor: (@parent, x = 0, y = 0) ->
             super @parent
             
-            @image = @game.assets.smoke
+            @image = @game.assets.images.smoke
             
             @x = x
             @y = y

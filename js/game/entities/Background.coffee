@@ -17,17 +17,17 @@ define (require) ->
                     oncoming: 'bottom'
                     speed: 10
                     alpha: 0.6
-                    image: @scene.game.assets.backgroundMountainsB
+                    image: @scene.game.assets.images.backgroundMountainsB
                 }, {
                     oncoming: 'bottom'
                     speed: 20
                     alpha: 1
-                    image: @scene.game.assets.backgroundMountainsA
+                    image: @scene.game.assets.images.backgroundMountainsA
                 }, {
                     oncoming: 'top'
                     speed: 40
                     alpha: 0.6
-                    image: @scene.game.assets.backgroundClouds
+                    image: @scene.game.assets.images.backgroundClouds
                 }
             ]
         
