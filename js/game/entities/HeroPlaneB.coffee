@@ -12,5 +12,5 @@ define (require) ->
             
             # Tirs
             @gun.cadency = 0.10
-            @gun.precision = 1.0
+            @gun.precision = 1.2
             

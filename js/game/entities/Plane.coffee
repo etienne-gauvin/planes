@@ -159,7 +159,7 @@ define (require) ->
                 shotAngle = @angle + (Math.random()-.5) * @gun.precision
                 
                 @gun.fireShotSprite.run()
-                @parent.addChild new Bullet(@, shotAngle)
+                @parent.addChild new Bullet(@parent, @, shotAngle)
                 createjs.Sound.play('shot')
         
         # Gérer la santé de l'avion

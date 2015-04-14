@@ -6,10 +6,9 @@ define (require) ->
     class Bullet extends Entity
         
         # Constructeur
-        constructor: (@parent, angle) ->
+        constructor: (@parent, @plane, angle) ->
             super @parent
             
-            @plane = @parent
             @angle = angle
             
             @x = @plane.x + @plane.width + 3
