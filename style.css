@@ -26,10 +26,26 @@ canvas {
 footer {
     margin-top: 1em;
 }
-a {
+a, button {
+    border: none;
+    background: none;
     color: #71cad4;
     text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    padding: 1px 4px;
 }
-a:hover {
+a:hover, button:hover, button:focus {
     color: #2f98a3;
+    outline: none;
+    border-color: #71cad4;
+}
+a:active, button:active {
+    color: black;
+    border-color: #2f98a3;
+}
+
+.hidden {
+    display: none;
 }

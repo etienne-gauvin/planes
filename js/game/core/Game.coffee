@@ -34,6 +34,23 @@ define (require) ->
             
             # Pause
             @pause = no
+            
+            # Activation du son
+            @get 'muted', => !!(localStorage.getItem("muted") is 'muted')
+            @set 'muted', (muted) =>
+                if muted
+                    document.querySelector('.sound-mute-toggle .mute').classList.add('hidden');
+                    document.querySelector('.sound-mute-toggle .unmute').classList.remove('hidden');
+                    localStorage.setItem('muted', 'muted');
+                    createjs.Sound.setMute(true);
+
+                # Activer le son
+                else
+                    document.querySelector('.sound-mute-toggle .mute').classList.remove('hidden');
+                    document.querySelector('.sound-mute-toggle .unmute').classList.add('hidden');
+                    localStorage.setItem('muted', '');
+                    createjs.Sound.setMute(false);
+            
         
         # Démarrer le jeu
         start: ->
@@ -114,3 +131,19 @@ define (require) ->
             else
                 @scene = scene
                 @scene.handleStart()
+        
+        # Couper le son
+        mute: ->
+            document.querySelector('.sound-mute-toggle .mute').classList.remove('hidden');
+            document.querySelector('.sound-mute-toggle .unmute').classList.add('hidden');
+            muted = yes
+            localStorage.setItem('muted', 'muted');
+            createjs.Sound.setMute(true);
+        
+        # Activer le son
+        unmute: ->
+            document.querySelector('.sound-mute-toggle .mute').classList.add('hidden');
+            document.querySelector('.sound-mute-toggle .unmute').classList.remove('hidden');
+            muted = no
+            localStorage.setItem('muted', '');
+            createjs.Sound.setMute(false);
