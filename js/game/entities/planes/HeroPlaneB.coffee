@@ -1,6 +1,6 @@
 define (require) ->
     
-    HeroPlane = require 'cs!game/entities/HeroPlane'
+    HeroPlane = require 'cs!game/entities/planes/HeroPlane'
     
     class HeroPlaneB extends HeroPlane
         

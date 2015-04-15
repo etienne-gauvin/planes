@@ -2,9 +2,9 @@ define (require) ->
     'use strict'
     
     Entity = require 'cs!game/core/Entity'
-    Bullet = require 'cs!game/entities/Bullet'
-    BulletFireShotSprite = require 'cs!game/entities/BulletFireShotSprite'
-    SmokeParticle = require 'cs!game/entities/SmokeParticle'
+    Bullet = require 'cs!game/entities/projectiles/Bullet'
+    BulletFireShot = require 'cs!game/entities/effects/BulletFireShot'
+    SmokeParticle = require 'cs!game/entities/effects/SmokeParticle'
     floor = Math.floor
     
     class Plane extends Entity
@@ -59,7 +59,7 @@ define (require) ->
                 precision: 0.5
                 shoot: no
                 ammo: 100
-                fireShotSprite: new BulletFireShotSprite @
+                fireShotSprite: new BulletFireShot @
             
             # Santé de l'avion
             @health = 100

@@ -3,7 +3,7 @@ define (require) ->
     Entity = require 'cs!game/core/Entity'
     floor = Math.floor
     
-    class BulletFireShotSprite extends Entity
+    class BulletFireShot extends Entity
         
         # Constructeur
         constructor: (@parent) ->

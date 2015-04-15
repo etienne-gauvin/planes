@@ -1,7 +1,7 @@
 define (require) ->
     
     Layer = require 'cs!game/core/entities/Layer'
-    Shell = require 'cs!game/entities/HUDShell'
+    Shell = require 'cs!game/entities/hudentities/HUDShell'
     
     # HUD
     class HUD extends Layer

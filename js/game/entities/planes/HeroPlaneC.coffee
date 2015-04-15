@@ -1,6 +1,6 @@
 define (require) ->
     
-    HeroPlane = require 'cs!game/entities/HeroPlane'
+    HeroPlane = require 'cs!game/entities/planes/HeroPlane'
     
     class HeroPlaneC extends HeroPlane
         
@@ -11,5 +11,5 @@ define (require) ->
             @image = @game.assets.images.heroPlaneC
             
             # Tirs
-            @gun.cadency = 0.20
+            @gun.cadency = 0.25
             @gun.precision = 0.2

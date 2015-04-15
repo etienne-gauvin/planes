@@ -7,9 +7,9 @@ define (require) ->
     HUD = require 'cs!game/entities/HUD'
     Background = require 'cs!game/entities/Background'
     
-    HeroPlaneA = require 'cs!game/entities/HeroPlaneA'
-    HeroPlaneB = require 'cs!game/entities/HeroPlaneB'
-    HeroPlaneC = require 'cs!game/entities/HeroPlaneC'
+    HeroPlaneA = require 'cs!game/entities/planes/HeroPlaneA'
+    HeroPlaneB = require 'cs!game/entities/planes/HeroPlaneB'
+    HeroPlaneC = require 'cs!game/entities/planes/HeroPlaneC'
     
     class PlayScene extends Scene
         
