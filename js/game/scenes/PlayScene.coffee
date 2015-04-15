@@ -6,6 +6,7 @@ define (require) ->
     Scene = require 'cs!game/core/entities/Scene'
     HUD = require 'cs!game/entities/HUD'
     Background = require 'cs!game/entities/Background'
+    HoverPoule = require 'cs!game/entities/enemies/HoverPoule'
     
     HeroPlaneA = require 'cs!game/entities/planes/HeroPlaneA'
     HeroPlaneB = require 'cs!game/entities/planes/HeroPlaneB'
@@ -76,3 +77,7 @@ define (require) ->
                 @hero.vel.y = vel.y
                 
                 @addChild @hero
+            
+            if event.keyCode is 88
+                
+                @addChild new HoverPoule @, @width - 24, @height * .5

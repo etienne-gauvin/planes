@@ -17,6 +17,8 @@ define
         { id: 'lum', src: 'images/lum.png' },
         { id: 'smoke', src: 'images/smoke.png' },
         
+        { id: 'hoverPoule', src: 'images/enemies/hoverPoule.png' },
+        
         # Sons
         
         { id: 'shot', src: 'sounds/single-shot.ogg' }
