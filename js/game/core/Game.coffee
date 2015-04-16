@@ -20,6 +20,9 @@ define (require) ->
             # Temps écoulé depuis le démarrage du jeu
             @t = 0
             
+            # Vitesse du jeu (<1=ralenti, 1=normal, >1=rapide)
+            @speed = 1
+            
             # Images, sons, etc.
             @assets = {}
             
@@ -82,7 +85,7 @@ define (require) ->
                 now = (new Date).getTime()
                 dt = now - lastTime
                 lastTime = now
-                @handleUpdate(dt / 1000)
+                @handleUpdate(dt / 1000 * @speed)
                 window.requestAnimationFrame anim
             
             window.requestAnimationFrame anim
