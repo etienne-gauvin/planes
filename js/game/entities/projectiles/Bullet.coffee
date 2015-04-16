@@ -9,6 +9,8 @@ define (require) ->
         constructor: (@parent, @plane, angle) ->
             super @parent
             
+            @type = 'bullet'
+            
             @angle = angle
             
             @x = @plane.x + @plane.width + 3

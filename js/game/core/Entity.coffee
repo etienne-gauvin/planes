@@ -20,8 +20,8 @@ define (require) ->
             @width = @height = 0
             
             # Centre absolu de l'objet, en fonction de sa taille (read only)
-            @get 'centerX', => @x + Math.cos(@angle) * 10#@width / 2
-            @get 'centerY', => @y + Math.sin(@angle + Math.PI*0) * 10#@height / 2
+            @get 'centerX', => @x + @width / 2
+            @get 'centerY', => @y + @height / 2
             @set 'centerX', =>
             @set 'centerY', =>
             
@@ -40,6 +40,12 @@ define (require) ->
             
             # Entités enfants
             @children = []
+            
+            # Collections d'enfant par type
+            @collections = {}
+            
+            # Pour être catégorisé en tant qu'enfant
+            @type = null
             
             # Écouteurs
             @listeners = {}
@@ -98,11 +104,22 @@ define (require) ->
         # Ajout d'un enfant
         addChild: (child) ->
             @children.push(child)
+            
+            if child.type?
+                @collections[child.type] = [] if not @collections[child.type]?
+                @collections[child.type].push(child)
+                
         
         # Retirer une entité enfant
         removeChild: (theChild) ->
             for c, child of @children
                 delete @children[c] if child is theChild
+            
+            if theChild.type?
+                @collection = @collections[theChild.type] or []
+                
+                for c, child of @collection
+                    delete @collection[c] if child is theChild
         
         ## Méthodes effectuant une vérification
         ## (retournent un booléen)
