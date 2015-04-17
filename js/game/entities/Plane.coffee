@@ -72,7 +72,7 @@ define (require) ->
                 lastParticle: 0
             
             # Hitbox
-            @hitBox = new RectHitBox @, -@width*.5, -@height*.5, @width, @height
+            @hitBox = new RectHitBox @, -@width*.5, -@height*0.8*.5, @width, @height*0.8
         
         # Mise à jour
         # @param Number dt
@@ -182,8 +182,13 @@ define (require) ->
         # Gérer l'effet de fumée derrière l'avion
         updateSmokeEffect: (dt) ->
             @smokeEffect.lastParticle += dt
-            if @smokeEffect.lastParticle > 0.5 * @health / 100
-                @parent.addChild new SmokeParticle(@parent, @x + @width*.5, @y + @height*.5)
+            
+            destructionLevel = 1 - @health / 100 if @health >= 0
+            destructionLevel = 1 if destructionLevel > 1 or @destroyed 
+            
+            
+            if @smokeEffect.lastParticle > 1 * (1 - destructionLevel + 0.05)
+                @parent.addChild new SmokeParticle(@parent, @x + @width*.5, @y + @height*.5, destructionLevel)
                 @smokeEffect.lastParticle = 0
         
         # Mise à jour des collisions

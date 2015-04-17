@@ -8,7 +8,7 @@ define (require) ->
     class SmokeParticle extends Entity
         
         # Constructeur
-        constructor: (@parent, x = 0, y = 0) ->
+        constructor: (@parent, x = 0, y = 0, @darkness = 0) ->
             super @parent
             
             @image = @game.assets.images.smoke
@@ -22,7 +22,10 @@ define (require) ->
             
             # Image aléatoire
             @m = Math.floor(Math.random() * @image.height / @height)
+            
+            # Vitesse
             @vel.x = -300 + Math.random() * 50
+            @vel.y = Math.random() * 20 - 10
         
         # Mise à jour
         # @param Number dt
@@ -38,7 +41,12 @@ define (require) ->
                 @n = easeout(@t, @duration, 0.5, 0.5)
             
                 @ctx.save()
-                @ctx.globalAlpha = 1 - @n
+                
+                if @t < 0.1
+                    @ctx.globalAlpha = @t / 0.1
+                else
+                    @ctx.globalAlpha = 1 - @n
+                
                 @ctx.translate(- @n * @width*.5 + @x, - @n * @height*.5 + @y)
                 @ctx.scale(@n, @n)
                 @ctx.drawImage(
@@ -50,4 +58,18 @@ define (require) ->
                     0,
                     @width,
                     @height)
+                
+                log @darkness
+                @ctx.globalAlpha = @ctx.globalAlpha * @darkness * 0.5
+                @ctx.globalCompositeOperation = 'difference'
+                @ctx.drawImage(
+                    @image,
+                    0, @m * @height,
+                    @width,
+                    @height,
+                    0,
+                    0,
+                    @width,
+                    @height)
+                
                 @ctx.restore()
