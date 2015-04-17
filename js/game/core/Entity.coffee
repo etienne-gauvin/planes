@@ -14,16 +14,18 @@ define (require) ->
             @ctx = @parent.ctx
             
             # Position
-            @x = @y = 0
+            @x = 0 if not @x?
+            @y = 0 if not @y?
             
             # Dimensions
-            @width = @height = 0
+            @width = 0 if not @width?
+            @height = 0 if not @height?
             
             # Centre absolu de l'objet, en fonction de sa taille (read only)
             @get 'centerX', => @x + @width / 2
             @get 'centerY', => @y + @height / 2
-            @set 'centerX', =>
-            @set 'centerY', =>
+            @set 'centerX', (val) => @x = val - @width / 2
+            @set 'centerY', (val) => @y = val - @height / 2
             
             # Angle (en radians)
             @angle = 0
