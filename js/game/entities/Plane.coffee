@@ -3,8 +3,10 @@ define (require) ->
     
     Entity = require 'cs!game/core/Entity'
     Bullet = require 'cs!game/entities/projectiles/Bullet'
+    RectHitBox = require 'cs!game/core/hitboxes/RectHitBox'
     BulletFireShot = require 'cs!game/entities/effects/BulletFireShot'
     SmokeParticle = require 'cs!game/entities/effects/SmokeParticle'
+    PlaneExplosion = require 'cs!game/entities/effects/PlaneExplosion'
     floor = Math.floor
     
     class Plane extends Entity
@@ -68,6 +70,9 @@ define (require) ->
             # Effet de fumée
             @smokeEffect =
                 lastParticle: 0
+            
+            # Hitbox
+            @hitBox = new RectHitBox @, -@width*.5, -@height*.5, @width, @height
         
         # Mise à jour
         # @param Number dt
@@ -78,6 +83,8 @@ define (require) ->
             @updateHealth(dt)
             @updateSmokeEffect(dt)
             @updateChildren(dt)
+            
+            
         
         # Représentation de la vitesse verticale de l'avion
         # comprise entre -1 (min) et 1 (max)
@@ -166,7 +173,7 @@ define (require) ->
         updateHealth: (dt) ->
             if @health <= 0 
                 if not @destroyed
-                    #@explode()
+                    @explode()
                 
                 else if @isOffGameScreen()
                     @parent.removeChild @
@@ -175,16 +182,21 @@ define (require) ->
         # Gérer l'effet de fumée derrière l'avion
         updateSmokeEffect: (dt) ->
             @smokeEffect.lastParticle += dt
-            if @smokeEffect.lastParticle > 0.5
+            if @smokeEffect.lastParticle > 0.5 * @health / 100
                 @parent.addChild new SmokeParticle(@parent, @x + @width*.5, @y + @height*.5)
                 @smokeEffect.lastParticle = 0
         
-        ### Détruire
-        explode: (callback) ->
-            
+        # Mise à jour des collisions
+        updateCollisions: (dt) ->
+            if not @destroyed and @parent.collections.hoverpoule?
+                hoverpoules = @parent.collections.hoverpoule
+                
+                for poule in hoverpoules
+                    if poule? and @hitBox.isCollidingWith(poule.hitBox)
+                        @health -= 10
+                        poule.explode()
+        
+        # Détruire
+        explode: ->
             @destroyed = yes
-            x = @x + @width / 2
-            y = @y + @height / 2 + (@getYSpeedPercentage() + 0.1) * 16
-            
-            @addChild(new Explosion @, @width/2, @height/2)###
-            
+            @parent.addChild new PlaneExplosion @parent, @centerX, @centerY

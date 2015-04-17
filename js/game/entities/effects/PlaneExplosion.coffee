@@ -3,26 +3,25 @@ define (require) ->
     Entity = require 'cs!game/core/Entity'
     floor = Math.floor
     
-    class HoverPouleExplosion extends Entity
+    class PlaneExplosion extends Entity
         
         # Constructeur
         constructor: (@parent, centerX, centerY) ->
             super @parent
             
-            @width = 24 * 3
+            @width = 32 * 3
             @height = 24 * 3
             
             @centerX = centerX
             @centerY = centerY
             
-            @image = @game.assets.images.hoverPouleExplosion
+            @image = @game.assets.images.planeExplosion
             @lumImage = @game.assets.images.explosionLum
             
             @t = 0
-            @duration = 0.10
+            @duration = 0.2
             @imgN = floor(@image.height / @height * Math.random())
-            #createjs.Sound.play('splash' + floor(Math.random()*3+1))
-            createjs.Sound.play('splash2')
+            createjs.Sound.play('explosion')
             
             
         
@@ -39,7 +38,8 @@ define (require) ->
                 @ctx.globalAlpha = 1 - @t / @duration
                 
                 scale = 0.4 * @t / @duration + 0.6
-                @ctx.translate(floor(@x), floor(@centerY - @height/2 * scale))
+                @ctx.translate( floor(@centerX - @width*0.8 * scale),
+                                floor(@centerY - @height*.5 * scale))
                 @ctx.scale(scale, scale)
                 
                 @ctx.drawImage(

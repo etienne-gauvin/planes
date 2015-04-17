@@ -19,11 +19,13 @@ define
         
         { id: 'hoverPoule', src: 'images/enemies/hoverPoule.png' },
         { id: 'hoverPouleExplosion', src: 'images/enemies/hoverPouleExplosion.png' },
+        { id: 'planeExplosion', src: 'images/effects/planeExplosion.png' },
         { id: 'explosionLum', src: 'images/explosionLum.png' },
         
         # Sons
         
         { id: 'shot', src: 'sounds/single-shot.ogg' }
+        { id: 'explosion', src: 'sounds/explosion.ogg' }
         
         { id: 'splash1', src: 'sounds/splashs/splash1.ogg' }
         { id: 'splash2', src: 'sounds/splashs/splash2.ogg' }

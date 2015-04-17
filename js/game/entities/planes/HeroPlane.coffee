@@ -35,8 +35,11 @@ define (require) ->
                 
                 @gun.shoot = kb.isDown(kb.SPACE)
             else
-                @goUp = @goDown = @goForward = @goBackward = no
+                @goUp = @goForward = @goBackward = no
                 @gun.shoot = no
+                @goDown = yes
+                @vel.gain.downhill = 1
+                @vel.ymax = 200
             
             @updateVelocity(dt)
             
@@ -48,7 +51,7 @@ define (require) ->
             @updateHealth(dt)
             @updateSmokeEffect(dt)
             @updateChildren(dt)
+            @updateCollisions(dt)
             
             if @isOffGameScreen()
-                @x = 10
-                @y = @scene.height / 2 - @height / 2
+                @parent.removeChild @

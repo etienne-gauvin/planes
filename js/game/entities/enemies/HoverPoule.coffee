@@ -12,6 +12,8 @@ define (require) ->
         constructor: (@parent, @x, @y) ->
             super @parent
             
+            @type = 'hoverpoule'
+            
             # Spritesheet
             @image = @game.assets.images.hoverPoule
             
@@ -103,7 +105,7 @@ define (require) ->
         updateVelocity: (dt) ->
             
             @vel.y = Math.cos(@t * @waveVSpeed) * @waveAmplitude
-            @updateVelocityToKeepOnScreen()
+            #@updateVelocityToKeepOnScreen()
             
             # Faire tomber
             if @destroyed
