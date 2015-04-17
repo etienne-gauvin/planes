@@ -96,13 +96,6 @@ define (require) ->
             
             @ctx.restore()
             
-            
-            @ctx.fillStyle = "rgba(255, 59, 0, 0.63)"
-            @ctx.fillRect(@centerX, @centerY, 5, 5)
-            @ctx.fillStyle = "rgba(0, 255, 196, 0.63)"
-            @ctx.fillRect(@x, @y, 5, 5)
-            
-            
         
         # Appliquer le déplacement vertical
         updateVelocity: (dt) ->
