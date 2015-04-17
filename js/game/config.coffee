@@ -18,6 +18,8 @@ define
         { id: 'smoke', src: 'images/smoke.png' },
         
         { id: 'hoverPoule', src: 'images/enemies/hoverPoule.png' },
+        { id: 'hoverPouleExplosion', src: 'images/enemies/hoverPouleExplosion.png' },
+        { id: 'explosionLum', src: 'images/explosionLum.png' },
         
         # Sons
         

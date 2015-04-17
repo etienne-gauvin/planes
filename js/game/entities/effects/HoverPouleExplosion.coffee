@@ -6,18 +6,22 @@ define (require) ->
     class HoverPouleExplosion extends Entity
         
         # Constructeur
-        constructor: (@parent) ->
+        constructor: (@parent, centerX, centerY) ->
             super @parent
             
-            @image = @game.assets.images.bulletFireShot
-            @lumImage = @game.assets.images.lum
+            @width = 24 * 3
+            @height = 24 * 3
             
-            @width = 16 * 3
-            @height = 7 * 3
+            @centerX = centerX
+            @centerY = centerY
             
-            @t = 10
-            @duration = 0.1
-            @imgN = 0
+            @image = @game.assets.images.hoverPouleExplosion
+            @lumImage = @game.assets.images.explosionLum
+            
+            @t = 0
+            @duration = 0.10
+            @imgN = floor(@image.height / @height * Math.random())
+            
             
         
         # Mise à jour
@@ -32,25 +36,31 @@ define (require) ->
                 @ctx.save()
                 @ctx.globalAlpha = 1 - @t / @duration
                 
+                scale = 0.4 * @t / @duration + 0.6
+                log scale
+                @ctx.translate(floor(@x), floor(@centerY - @height/2 * scale))
+                @ctx.scale(scale, scale)
+                
                 @ctx.drawImage(
                     @image,
                     0, @imgN * @height,
                     @width,
                     @height,
-                    @parent.width,
-                    @parent.height / 2 - @height / 2 + 4,
+                    0, 0,
                     @width,
                     @height)
                 
-                @ctx.drawImage(
-                    @lumImage,
-                    @parent.width - @lumImage.width / 2,
-                    @parent.height / 2 + 4 - @lumImage.height / 2)
-                
                 @ctx.restore()
+                
+                if @t < @duration / 2
+                    @ctx.save()
+                    @ctx.globalAlpha = 1 - @t / (@duration / 2)
+                    
+                    @ctx.drawImage(
+                        @lumImage,
+                        @centerX - @lumImage.width / 2,
+                        @centerY - @lumImage.height / 2)
+
+                    @ctx.restore()
         
-        # (Re-)lancer l'animation
-        run: ->
-            @t = 0
-            @imgN = Math.floor(Math.random() * @image.height / @height)
             

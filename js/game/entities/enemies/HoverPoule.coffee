@@ -3,20 +3,17 @@ define (require) ->
     
     Entity = require 'cs!game/core/Entity'
     RectHitBox = require 'cs!game/core/hitboxes/RectHitBox'
+    HoverPouleExplosion = require 'cs!game/entities/effects/HoverPouleExplosion'
     floor = Math.floor
     
     class HoverPoule extends Entity
         
         # Constructeur
-        constructor: (@parent, x, y) ->
+        constructor: (@parent, @x, @y) ->
             super @parent
             
             # Spritesheet
             @image = @game.assets.images.hoverPoule
-            
-            # Position
-            @x = x
-            @y = y
             
             # Dimensions
             @width = @height = 24 * 3
@@ -53,8 +50,14 @@ define (require) ->
             @updateVelocity(dt)
             @updatePosition(dt)
             @updateGun(dt)
-            @updateHealth(dt)
             @updateChildren(dt)
+            
+            if @health <= 0 
+                if not @destroyed
+                    @explode()
+                
+                else if @isOffGameScreen()
+                    @parent.removeChild @
         
         # Affichage
         # @param CanvasRenderingContext2D
@@ -64,7 +67,7 @@ define (require) ->
             frame = 1 if @vel.y < 0
             
             @ctx.save()
-            @ctx.translate(floor(@x - @width * 0.5), floor(@y - @height * 0.5))
+            @ctx.translate(floor(@x), floor(@y))
             
             @ctx.drawImage(@image,
                           0, @height * frame,
@@ -84,7 +87,13 @@ define (require) ->
                               @width, @height)
             
             @ctx.restore()
-    
+            
+            
+            @ctx.fillStyle = "rgba(255, 59, 0, 0.63)"
+            @ctx.fillRect(@centerX, @centerY, 5, 5)
+            @ctx.fillStyle = "rgba(0, 255, 196, 0.63)"
+            @ctx.fillRect(@x, @y, 5, 5)
+            
             
         
         # Appliquer le déplacement vertical
@@ -102,12 +111,8 @@ define (require) ->
             if @gun.shoot and @gun.lastShoot >= @gun.cadency
                 @gun.lastShoot = 0
         
-        # Gérer la santé de l'avion
-        updateHealth: (dt) ->
-            if @health <= 0 
-                if not @destroyed
-                    #@explode()
-                
-                else if @isOffGameScreen()
-                    @parent.removeChild @
-        
+        # Explosion
+        explode: ->
+            @destroyed = yes
+            @parent.addChild new HoverPouleExplosion @parent, @centerX, @centerY
+            @parent.removeChild @

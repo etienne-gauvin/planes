@@ -80,4 +80,5 @@ define (require) ->
             
             if event.keyCode is 88
                 
-                @addChild new HoverPoule @, @width - 24, @height * .5
+                @hp = new HoverPoule @, @width - 24, @height * .5
+                @addChild @hp
