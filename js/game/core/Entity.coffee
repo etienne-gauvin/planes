@@ -160,3 +160,26 @@ define (require) ->
             
             return true
         
+        # Garder l'avion dans les limites de l'écran
+        updateVelocityToKeepOnScreen: ->
+            
+            # Limiter la vitesse sur les bords de l'écran
+            padding = 100
+            
+            # Limitation en haut
+            if @vel.y < 0 and @y < padding
+                @vel.y *= Math.pow((@y / padding), 0.1) or 0
+            
+            # Limitation en bas
+            if @vel.y > 0 and @parent.height - @y - @height < padding
+                @vel.y *= Math.pow(((@parent.height - @y - @height) / padding), 0.1) or 0
+                
+            # Limitation à droite
+            if @vel.x < 0 and @x < padding
+                @vel.x *= Math.pow((@x / padding), 0.1) or 0
+                
+            # Limitation à gauche
+            if @vel.x > 0 and @parent.width - @x - @width < padding
+                @vel.x *= Math.pow(((@parent.width - @x - @width) / padding), 0.1) or 0
+        
+        
