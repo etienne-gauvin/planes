@@ -2,6 +2,7 @@ define (require) ->
     'use strict'
     
     Entity = require 'cs!game/core/Entity'
+    RectHitBox = require 'cs!game/core/hitboxes/RectHitBox'
     floor = Math.floor
     
     class HoverPoule extends Entity
@@ -39,6 +40,9 @@ define (require) ->
             
             # t
             @t = 0
+            
+            # Hitbox
+            @hitBox = new RectHitBox @, -5, -5, 10, 10
             
         
         # Mise à jour
@@ -86,7 +90,7 @@ define (require) ->
         # Appliquer le déplacement vertical
         updateVelocity: (dt) ->
             
-            @vel.y = Math.cos(@t) * 100
+            @vel.y = Math.cos(@t * 4) * 50
             
             # Faire tomber
             if @destroyed
