@@ -21,16 +21,27 @@ define (require) ->
             PointHitBox = require 'cs!game/core/hitboxes/PointHitBox'
             
             if hitBox instanceof PointHitBox
-                return thatX >= thisX and thatY >= thisY and thatX <= thisX+@width and thatY <= thisY+@height
+                return  thatX >= thisX and
+                        thatY >= thisY and
+                        thatX <= thisX+@width and
+                        thatY <= thisY+@height
             
             else if hitBox instanceof RectHitBox
-                a = new PointHitBox @parent, @x, @y
-                b = new PointHitBox @parent, @x + @width, @y
-                c = new PointHitBox @parent, @x + @width, @y + @height
-                d = new PointHitBox @parent, @x, @y + @height
+                r1 =
+                    left: thisX
+                    right: thisX + @width
+                    top: thisY
+                    bottom: thisY + @height
+                r2 =
+                    left: thatX
+                    right: thatX + hitBox.width
+                    top: thatY
+                    bottom: thatY + hitBox.height
                 
-                return hitBox.isCollidingWith(a) or hitBox.isCollidingWith(b) or hitBox.isCollidingWith(c) or hitBox.isCollidingWith(d)
-                    
+                return not (r2.left > r1.right or
+                            r2.right < r1.left or
+                            r2.top > r1.bottom or
+                            r2.bottom < r1.top)
             
             else
                 throw Error('Unknown hitbox type : ' + hitBox.type)
