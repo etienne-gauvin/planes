@@ -45,7 +45,7 @@ define (require) ->
             
             if @game.t > 3
                 @lastHoverPouleT += dt
-                if @lastHoverPouleT > @hoverPouleSpawnInterval
+                if @lastHoverPouleT > @hoverPouleSpawnInterval+0.2
                     @addChild new HoverPoule @, @width - 24, @height*.9*Math.random() + @height*.05
                     @lastHoverPouleT = 0
                     @hoverPouleSpawnInterval *= 0.98
