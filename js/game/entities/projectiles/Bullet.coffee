@@ -1,6 +1,7 @@
 define (require) ->
     
     Entity = require 'cs!game/core/Entity'
+    PointHitBox = require 'cs!game/core/hitboxes/PointHitBox'
     floor = Math.floor
     
     class Bullet extends Entity
@@ -8,6 +9,8 @@ define (require) ->
         # Constructeur
         constructor: (@parent, @plane, angle) ->
             super @parent
+            
+            @type = 'bullet'
             
             @angle = angle
             
@@ -23,6 +26,9 @@ define (require) ->
             # Vélocité
             @vel.x = Math.cos(@angle/3*15 * Math.PI/180) * @speed
             @vel.y = Math.sin(@angle/3*15 * Math.PI/180) * @speed
+            
+            # Hitbox
+            @hitBox = new PointHitBox @
         
         
         # Mise à jour

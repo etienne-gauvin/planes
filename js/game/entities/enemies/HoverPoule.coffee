@@ -39,7 +39,7 @@ define (require) ->
             @t = 0
             
             # Hitbox
-            @hitBox = new RectHitBox @, -5, -5, 10, 10
+            @hitBox = new RectHitBox @, -5 * 3, -5 * 3, 10 * 3, 10 * 3
             
         
         # Mise à jour
@@ -51,6 +51,14 @@ define (require) ->
             @updatePosition(dt)
             @updateGun(dt)
             @updateChildren(dt)
+            
+            if not @destroyed and @parent.collections.bullet?
+                bullets = @parent.collections.bullet
+                
+                for bullet in bullets
+                    if bullet? and @hitBox.isCollidingWith(bullet.hitBox)
+                        @explode()
+                        @parent.removeChild bullet
             
             if @health <= 0 
                 if not @destroyed
