@@ -30,6 +30,10 @@ define (require) ->
             @hero = new HeroPlaneA @
             @hero.y = @game.canvas.height*.5 - @hero.height*.5
             @addChild @hero
+            
+            # Spawn des hoverPoules
+            @hoverPouleSpawnInterval = 2
+            @lastHoverPouleT = 0
         
         # Mise à jour de la scène
         # @param Number dt
@@ -38,6 +42,13 @@ define (require) ->
             
             if @hero and @game.t < 1
                 @hero.x = easeout(@game.t, 1, - @hero.width, @hero.width * 2)
+            
+            if @game.t > 3
+                @lastHoverPouleT += dt
+                if @lastHoverPouleT > @hoverPouleSpawnInterval
+                    @addChild new HoverPoule @, @width - 24, @height*.9*Math.random() + @height*.05
+                    @lastHoverPouleT = 0
+                    @hoverPouleSpawnInterval *= 0.98
             
             @hud.handleUpdate(dt)
         
@@ -77,8 +88,3 @@ define (require) ->
                 @hero.vel.y = vel.y
                 
                 @addChild @hero
-            
-            if event.keyCode is 88
-                
-                @hp = new HoverPoule @, @width - 24, @height * .5
-                @addChild @hp
