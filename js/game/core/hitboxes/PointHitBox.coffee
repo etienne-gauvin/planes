@@ -15,8 +15,8 @@ define (require) ->
         
         # Détermine si l'entité est hors du parent
         isCollidingWith: (hitBox) ->
-            { thisX, thisY } = @abs()
-            { thatX, thatY } = hitBox.abs()
+            [thisX, thisY] = @abs()
+            [thatX, thatY] = hitBox.abs()
             
             RectHitBox = require 'cs!game/core/hitboxes/RectHitBox'
             
