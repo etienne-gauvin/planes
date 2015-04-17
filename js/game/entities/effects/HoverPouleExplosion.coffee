@@ -22,7 +22,6 @@ define (require) ->
             @duration = 0.10
             @imgN = floor(@image.height / @height * Math.random())
             createjs.Sound.play('splash' + floor(Math.random()*3+1))
-            log 'splash' + floor(Math.random()*3+1)
             
             
         
@@ -39,7 +38,6 @@ define (require) ->
                 @ctx.globalAlpha = 1 - @t / @duration
                 
                 scale = 0.4 * @t / @duration + 0.6
-                log scale
                 @ctx.translate(floor(@x), floor(@centerY - @height/2 * scale))
                 @ctx.scale(scale, scale)
                 
