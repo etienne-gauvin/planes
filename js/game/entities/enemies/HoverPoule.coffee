@@ -35,8 +35,10 @@ define (require) ->
             @health = 100
             @destroyed = no
             
-            # t
-            @t = 0
+            # Vitesse et déplacement de l'hoverpoule
+            @t = Math.random() * 10
+            @waveAmplitude = 10 
+            @waveVSpeed = 0.4
             
             # Hitbox
             @hitBox = new RectHitBox @, -5 * 3, -5 * 3, 10 * 3, 10 * 3
@@ -100,7 +102,8 @@ define (require) ->
         # Appliquer le déplacement vertical
         updateVelocity: (dt) ->
             
-            @vel.y = Math.cos(@t * 4) * 50
+            @vel.y = Math.cos(@t * @waveVSpeed) * @waveAmplitude
+            @updateVelocityToKeepOnScreen()
             
             # Faire tomber
             if @destroyed
