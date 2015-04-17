@@ -24,4 +24,8 @@ define
         # Sons
         
         { id: 'shot', src: 'sounds/single-shot.ogg' }
+        
+        { id: 'splash1', src: 'sounds/splashs/splash1.ogg' }
+        { id: 'splash2', src: 'sounds/splashs/splash2.ogg' }
+        { id: 'splash3', src: 'sounds/splashs/splash3.ogg' }
     ]

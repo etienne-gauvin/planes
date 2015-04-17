@@ -21,6 +21,8 @@ define (require) ->
             @t = 0
             @duration = 0.10
             @imgN = floor(@image.height / @height * Math.random())
+            createjs.Sound.play('splash' + floor(Math.random()*3+1))
+            log 'splash' + floor(Math.random()*3+1)
             
             
         
