@@ -43,7 +43,7 @@ define (require) ->
             @waveVSpeed = 0.4
             
             # Hitbox
-            @hitBox = new RectHitBox @, -5 * 3, -5 * 3, 10 * 3, 10 * 3
+            @hitBox = new RectHitBox @, -5 * 3, -7 * 3, 10 * 3, 12 * 3
             
         
         # Mise à jour
