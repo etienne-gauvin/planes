@@ -16,6 +16,7 @@ define
         { id: 'bulletFireShot', src: 'images/bulletFireShot.png' },
         { id: 'lum', src: 'images/lum.png' },
         { id: 'smoke', src: 'images/smoke.png' },
+        { id: 'feather', src: 'images/effects/feather.png' },
         
         { id: 'hoverPoule', src: 'images/enemies/hoverPoule.png' },
         { id: 'hoverPouleExplosion', src: 'images/enemies/hoverPouleExplosion.png' },

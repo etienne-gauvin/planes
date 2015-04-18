@@ -1,6 +1,7 @@
 define (require) ->
     
     Entity = require 'cs!game/core/Entity'
+    Feather = require 'cs!game/entities/effects/Feather.coffee'
     floor = Math.floor
     
     class HoverPouleExplosion extends Entity
@@ -23,6 +24,11 @@ define (require) ->
             @imgN = floor(@image.height / @height * Math.random())
             #createjs.Sound.play('splash' + floor(Math.random()*3+1))
             createjs.Sound.play('splash2')
+            
+            for i in [1 .. floor(Math.random()*4)]
+                x = @centerX + Math.random() * @width*.5 - @width*.25
+                y = @centerY + Math.random() * @height*.5 - @height*.25
+                @parent.addChild new Feather @parent, x, y
             
             
         

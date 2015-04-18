@@ -59,7 +59,6 @@ define (require) ->
                     @width,
                     @height)
                 
-                log @darkness
                 @ctx.globalAlpha = @ctx.globalAlpha * @darkness * 0.5
                 @ctx.globalCompositeOperation = 'difference'
                 @ctx.drawImage(
