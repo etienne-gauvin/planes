@@ -82,7 +82,7 @@ define (require) ->
             @ctx.translate(floor(@x), floor(@y))
             
             @ctx.drawImage(@image,
-                          0, @height * frame,
+                          @width * Math.floor((@t*30)%2), @height * frame,
                           @width, @height,
                           0, 0,
                           @width, @height)
