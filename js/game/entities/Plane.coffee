@@ -64,8 +64,18 @@ define (require) ->
                 fireShotSprite: new BulletFireShot @
             
             # Santé de l'avion
-            @health = 100
             @destroyed = no
+            health = 100
+            @get 'health', -> health
+            
+            # Augmenter/réduire la santé restante
+            @set 'health', (newHealth) =>
+                if newHealth < health
+                    @parent.addChild new PlaneExplosion @parent, @centerX + @width/3, @centerY
+                
+                health = newHealth
+                @destroyed = yes if health <= 0
+            
             
             # Effet de fumée
             @smokeEffect =
@@ -201,7 +211,3 @@ define (require) ->
                         @health -= 10
                         poule.explode()
         
-        # Détruire
-        explode: ->
-            @destroyed = yes
-            @parent.addChild new PlaneExplosion @parent, @centerX, @centerY
