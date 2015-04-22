@@ -6,8 +6,8 @@ define (require) ->
     class Background extends Entity
         
         # Constructeur
-        constructor: (@scene) ->
-            super(@scene)
+        constructor: (@parent) ->
+            super @parent
             
             @t = 0
             
@@ -17,17 +17,17 @@ define (require) ->
                     oncoming: 'bottom'
                     speed: 10
                     alpha: 0.6
-                    image: @scene.game.assets.images.backgroundMountainsB
+                    image: @game.assets.images.backgrounds.mountains.background
                 }, {
                     oncoming: 'bottom'
                     speed: 20
                     alpha: 1
-                    image: @scene.game.assets.images.backgroundMountainsA
+                    image: @game.assets.images.backgrounds.mountains.foreground
                 }, {
                     oncoming: 'top'
                     speed: 40
                     alpha: 0.6
-                    image: @scene.game.assets.images.backgroundClouds
+                    image: @game.assets.images.backgrounds.clouds
                 }
             ]
         
@@ -45,7 +45,7 @@ define (require) ->
             for layer in @layers
                 @width = layer.image.width
                 
-                x = -@t * layer.speed  % @scene.width
+                x = -@t * layer.speed  % @parent.width
                 x -= @width while x + @width > 0
                 
                 y = 0
@@ -59,7 +59,7 @@ define (require) ->
                 @ctx.globalAlpha = layer.alpha or 1
                 
                 # Affichage du nombre de fonds nécessaire
-                while x < @scene.width
+                while x < @parent.width
                     @ctx.drawImage(layer.image, x, y)
                     x += @width
             

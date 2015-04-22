@@ -15,7 +15,7 @@ define (require) ->
             @type = 'hoverpoule'
             
             # Spritesheet
-            @image = @game.assets.images.hoverPoule
+            @image = @game.assets.images.enemies.hoverpoule.spritesheet
             
             # Dimensions
             @width = @height = 24 * 3

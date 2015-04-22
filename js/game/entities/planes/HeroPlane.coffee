@@ -13,7 +13,7 @@ define (require) ->
             
             @x = @y = 0
             
-            @image = @game.assets.images.heroPlaneA
+            @image = @game.assets.images.planes.spritesheet
             
             # Munitions
             @gun.ammoMax = 40

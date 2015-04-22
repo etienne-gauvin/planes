@@ -9,7 +9,7 @@ define (require) ->
         constructor: (@parent, @x, @y) ->
             super @parent
             
-            @image = @game.assets.images.feather
+            @image = @game.assets.images.enemies.hoverpoule.effects.feather_spritesheet
             
             @width = 5 * 3
             @height = 3 * 3

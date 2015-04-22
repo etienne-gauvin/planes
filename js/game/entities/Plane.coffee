@@ -17,6 +17,7 @@ define (require) ->
             
             # Spritesheet de l'avion
             @image = null
+            @imageN = 0
             
             # Dimensions
             @width =  24 * 3
@@ -114,7 +115,7 @@ define (require) ->
             @ctx.translate(floor(- @width * 0.5), floor(- @height * 0.5))
             
             @ctx.drawImage(@image,
-                          0, @height * (frame + 3),
+                          @width * @imageN, @height * (frame + 3),
                           @width, @height,
                           0, 0,
                           @width, @height)

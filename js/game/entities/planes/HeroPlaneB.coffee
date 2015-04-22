@@ -8,7 +8,7 @@ define (require) ->
         constructor: (@parent) ->
             super @parent
             
-            @image = @game.assets.images.heroPlaneB
+            @imageN = 1
             
             # Tirs
             @gun.cadency = 0.10

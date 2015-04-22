@@ -15,8 +15,8 @@ define (require) ->
             @centerX = centerX
             @centerY = centerY
             
-            @image = @game.assets.images.planeExplosion
-            @lumImage = @game.assets.images.explosionLum
+            @image = @game.assets.images.planes.effects.explosion.fire
+            @lumImage = @game.assets.images.planes.effects.explosion.flash
             
             @t = 0
             @duration = 0.2

@@ -24,7 +24,7 @@ define (require) ->
             @speed = 1
             
             # Images, sons, etc.
-            @assets = {}
+            @assets = @config.assets.tree
             
             # Représentation du clavier
             @keyboard = new Keyboard @
@@ -67,8 +67,9 @@ define (require) ->
             # File de chargement des assets
             loadQueue = new createjs.LoadQueue()
             loadQueue.installPlugin(createjs.Sound);
-            loadQueue.loadManifest(@config.assetsManifest, false, @config.assetsBasePath)
-
+            manifest = @populateManifest([], @config.assets.tree)
+            loadQueue.loadManifest(manifest, false, @config.assets.basepath)
+            
             # A la fin du chargement, lancer le jeu
             loadQueue.on "complete", (e) => @handleLoadComplete(e)
             loadQueue.on "progress", (e) => @handleLoadProgress(e)
@@ -119,8 +120,7 @@ define (require) ->
         
         # Progression du chargement
         handleFileLoad: (e) ->
-            @assets[e.item.type+'s'] = {} if not @assets[e.item.type+'s']?
-            @assets[e.item.type+'s'][e.item.id] = e.result
+            @placeAsset(@assets, e.item.id, e.result)
         
         # Chargement terminé
         handleLoadComplete: (e) ->
@@ -150,3 +150,26 @@ define (require) ->
             muted = no
             localStorage.setItem('muted', '');
             createjs.Sound.setMute(false);
+        
+        # Créer le manifest d'après la configuration
+        populateManifest: (manifest, tree, path = '') ->
+            for filename, value of tree
+                if typeof value is 'object'
+                    manifest = @populateManifest(manifest, value, path + filename + '/')
+                else if typeof value is 'string'
+                    f = path + filename + value
+                    tree[filename] = f
+                    manifest.push { id: f, src: f }
+        
+            return manifest
+        
+        # Placer une ressource à sa place dans le tableau des assets
+        placeAsset: (assets, id, asset) ->
+            for filename, value of assets
+                if value == id
+                    assets[filename] = asset
+                    return true
+                else if value.constructor is Object
+                    return true if @placeAsset(value, id, asset)
+            
+            return false

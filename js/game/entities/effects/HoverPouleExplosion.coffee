@@ -16,8 +16,8 @@ define (require) ->
             @centerX = centerX
             @centerY = centerY
             
-            @image = @game.assets.images.hoverPouleExplosion
-            @lumImage = @game.assets.images.explosionLum
+            @image = @game.assets.images.enemies.hoverpoule.effects.explosion.spritesheet
+            @lumImage = @game.assets.images.enemies.hoverpoule.effects.explosion.flash
             
             @t = 0
             @duration = 0.10
