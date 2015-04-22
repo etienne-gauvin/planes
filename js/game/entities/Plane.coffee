@@ -90,7 +90,6 @@ define (require) ->
             @updateVelocity(dt)
             @updatePosition(dt)
             @updateGun(dt)
-            @updateHealth(dt)
             @updateSmokeEffect(dt)
             @updateChildren(dt)
             
@@ -178,16 +177,6 @@ define (require) ->
                 @gun.fireShotSprite.run()
                 @parent.addChild new Bullet(@parent, @, shotAngle)
                 createjs.Sound.play('shot')
-        
-        # Gérer la santé de l'avion
-        updateHealth: (dt) ->
-            if @health <= 0 
-                if not @destroyed
-                    @explode()
-                
-                else if @isOffGameScreen()
-                    @parent.removeChild @
-                    log "OVER"
         
         # Gérer l'effet de fumée derrière l'avion
         updateSmokeEffect: (dt) ->

@@ -48,7 +48,6 @@ define (require) ->
             
             @updatePosition(dt)
             @updateGun(dt)
-            @updateHealth(dt)
             @updateSmokeEffect(dt)
             @updateChildren(dt)
             @updateCollisions(dt)
