@@ -177,7 +177,7 @@ define (require) ->
                 
                 @gun.fireShotSprite.run()
                 @parent.addChild new Bullet(@parent, @, shotAngle)
-                createjs.Sound.play('shot')
+                createjs.Sound.play('sounds/planes/shot.ogg')
         
         # Gérer l'effet de fumée derrière l'avion
         updateSmokeEffect: (dt) ->

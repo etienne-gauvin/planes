@@ -21,7 +21,7 @@ define (require) ->
             @t = 0
             @duration = 0.2
             @imgN = floor(@image.height / @height * Math.random())
-            createjs.Sound.play('explosion')
+            createjs.Sound.play('sounds/planes/explosion.ogg')
             
             
         

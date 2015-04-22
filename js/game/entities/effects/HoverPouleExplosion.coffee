@@ -22,8 +22,7 @@ define (require) ->
             @t = 0
             @duration = 0.10
             @imgN = floor(@image.height / @height * Math.random())
-            #createjs.Sound.play('splash' + floor(Math.random()*3+1))
-            createjs.Sound.play('splash2')
+            createjs.Sound.play('sounds/enemies/hoverpoule/explosion.ogg')
             
             for i in [1 .. floor(Math.random()*4)]
                 x = @centerX + Math.random() * @width*.5 - @width*.25
